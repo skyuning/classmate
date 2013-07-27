@@ -1,22 +1,33 @@
 package com.example.classmate;
 
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
+import android.support.v4.app.FragmentActivity;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
+
+    private TabHost mTabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
+        ViewAnnotation.bind(getWindow().getDecorView(), this);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+        mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+        mTabHost.setup();
 
+        TabSpec tabSpec;
+        
+        tabSpec = mTabHost.newTabSpec("classmate_list");
+        tabSpec.setIndicator("同学列表");
+        tabSpec.setContent(R.id.classmate_list_fragment);
+        mTabHost.addTab(tabSpec);
+
+        tabSpec = mTabHost.newTabSpec("notify_list");
+        tabSpec.setIndicator("通知列表");
+        tabSpec.setContent(R.id.notify_list_fragment);
+        mTabHost.addTab(tabSpec);
+    }
 }
