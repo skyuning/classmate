@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ClassmateListFragment extends BaseFragment {
+public class NewsListFragment extends BaseFragment {
 
     @ViewInject(id = R.id.listview)
     private ListView mListView;
@@ -32,7 +32,7 @@ public class ClassmateListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         
-        setTitle("同学们");
+        setTitle("新鲜事");
         
         mLayout = (LinearLayout) inflater.inflate(R.layout.fragment_classmate_list, null);
         ViewAnnotation.bind(mLayout, this);

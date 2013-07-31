@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ClassmateListFragment extends BaseFragment {
+public class CommemorationListFragment extends BaseFragment {
 
     @ViewInject(id = R.id.listview)
     private ListView mListView;
@@ -34,6 +34,7 @@ public class ClassmateListFragment extends BaseFragment {
         
         setTitle("同学们");
         
+        mLayout = new LinearLayout(getActivity());
         mLayout = (LinearLayout) inflater.inflate(R.layout.fragment_classmate_list, null);
         ViewAnnotation.bind(mLayout, this);
         
@@ -54,14 +55,14 @@ public class ClassmateListFragment extends BaseFragment {
     }
 
     private JSONArray getListData() throws JSONException {
-        String jsonData = "{'classmates': ["
-                + "{ 'name': 'skyun', 'sex': '男', 'phone': '13171741551', 'age': 26 },"
-                + "{ 'name': 'jerry', 'sex': '男', 'phone': 'xxxxxxxxxxx', 'age': 26 },"
-                + "{ 'name': 'gangz', 'sex': '男', 'phone': 'xxxxxxxxxxx', 'age': 26 }"
+        String jsonData = "{'notifies': ["
+                + "{ 'name': 'jerry', 'what': '生日', 'datetime': '2013.07.20' },"
+                + "{ 'name': '中秋赏月', 'what': '聚会', 'datetime': '2013.9.19' },"
+                + "{ 'name': '散伙饭', 'what': '聚餐', 'datetime': '2013.12.31' }"
                 + "]}";
 
         JSONObject jo = new JSONObject(jsonData);
-        JSONArray ja = jo.getJSONArray("classmates");
+        JSONArray ja = jo.getJSONArray("notifies");
         return ja;
     }
     
@@ -104,7 +105,7 @@ public class ClassmateListFragment extends BaseFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder = null;
             if (null == convertView) {
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_classmate, null);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_notify, null);
                 holder = new ViewHolder();
                 ViewAnnotation.bind(convertView, holder);
                 convertView.setTag(holder);
@@ -114,8 +115,8 @@ public class ClassmateListFragment extends BaseFragment {
             
             JSONObject item = (JSONObject) getItem(position);
             holder.name.setText(item.optString("name"));
-            holder.sex.setText(item.optString("sex"));
-            holder.phone.setText(item.optString("phone"));
+            holder.what.setText(item.optString("what"));
+            holder.datetime.setText(item.optString("datetime"));
             return convertView;
         }
         
@@ -123,11 +124,11 @@ public class ClassmateListFragment extends BaseFragment {
             @ViewInject(id = R.id.name)
             TextView name;
             
-            @ViewInject(id = R.id.sex)
-            TextView sex;
+            @ViewInject(id = R.id.what)
+            TextView what;
             
-            @ViewInject(id = R.id.phone)
-            TextView phone;
+            @ViewInject(id = R.id.datetime)
+            TextView datetime;
         }
     }
 }
