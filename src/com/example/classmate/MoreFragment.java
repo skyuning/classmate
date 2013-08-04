@@ -5,8 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.classmate.common.BaseFragment;
-import com.example.xframe.annotation.ViewAnnotation;
-import com.example.xframe.annotation.ViewAnnotation.ViewInject;
+import org.xframe.annotation.ViewAnnotation;
+import org.xframe.annotation.ViewAnnotation.ViewInject;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -114,7 +114,6 @@ public class MoreFragment extends BaseFragment {
             
             JSONObject item = (JSONObject) getItem(position);
             holder.name.setText(item.optString("name"));
-            holder.sex.setText(item.optString("sex"));
             holder.phone.setText(item.optString("phone"));
             return convertView;
         }
@@ -122,9 +121,6 @@ public class MoreFragment extends BaseFragment {
         private static class ViewHolder {
             @ViewInject(id = R.id.name)
             TextView name;
-            
-            @ViewInject(id = R.id.sex)
-            TextView sex;
             
             @ViewInject(id = R.id.phone)
             TextView phone;

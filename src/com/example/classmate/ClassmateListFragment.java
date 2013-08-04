@@ -1,14 +1,26 @@
 package com.example.classmate;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.xframe.annotation.JSONUtils;
+import org.xframe.annotation.JSONUtils.JSONDict;
+import org.xframe.annotation.ViewAnnotation;
+import org.xframe.annotation.ViewAnnotation.ViewInject;
 
 import com.example.classmate.common.BaseFragment;
-import com.example.xframe.annotation.ViewAnnotation;
-import com.example.xframe.annotation.ViewAnnotation.ViewInject;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +31,6 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ClassmateListFragment extends BaseFragment {
 
@@ -27,6 +38,8 @@ public class ClassmateListFragment extends BaseFragment {
     private ListView mListView;
     
     private LinearLayout mLayout;
+    private List<Classmate> mData;
+    private ClassmateAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,32 +50,64 @@ public class ClassmateListFragment extends BaseFragment {
         mLayout = (LinearLayout) inflater.inflate(R.layout.fragment_classmate_list, null);
         ViewAnnotation.bind(mLayout, this);
         
-        JSONArray data = null;
-        try {
-            data = getListData();
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
-            return mLayout;
-        }
-        
-        _Adapter adapter = new _Adapter(getActivity(), data);
-        mListView.setAdapter(adapter);
+        mData = new ArrayList<Classmate>();
+        mAdapter = new ClassmateAdapter(getActivity(), mData);
+        mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new _OnItemClickListener());
+//        loadOnePageData(1);
+//        loadOnePageData(2);
         
         return mLayout;
+//        JSONArray data = null;
+//        try {
+//            data = getListData();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
+//            return mLayout;
+//        }
     }
 
-    private JSONArray getListData() throws JSONException {
-        String jsonData = "{'classmates': ["
-                + "{ 'name': 'skyun', 'sex': '男', 'phone': '13171741551', 'age': 26 },"
-                + "{ 'name': 'jerry', 'sex': '男', 'phone': 'xxxxxxxxxxx', 'age': 26 },"
-                + "{ 'name': 'gangz', 'sex': '男', 'phone': 'xxxxxxxxxxx', 'age': 26 }"
-                + "]}";
-
-        JSONObject jo = new JSONObject(jsonData);
-        JSONArray ja = jo.getJSONArray("classmates");
-        return ja;
+    private void loadOnePageData(int page) {
+        AsyncTask<Void, Void, JSONArray> asyncTask = new AsyncTask<Void, Void, JSONArray>() {
+            @Override
+            protected JSONArray doInBackground(Void... params) {
+                String url = "http://192.168.1.10:8080/Classmate/app/user.jsp?action=list&page=1&size=9";
+                HttpGet get = new HttpGet(url);
+                HttpClient client = new DefaultHttpClient();
+                HttpResponse response;
+                try {
+                    response = client.execute(get);
+                    String content = EntityUtils.toString(response.getEntity());
+                    JSONArray ja = new JSONArray(content);
+                    return ja;
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(JSONArray result) {
+                if (result == null)
+                    return;
+                
+                for (int i=0; i<result.length(); i++) {
+                    try {
+                        Classmate classmate = new Classmate();
+                        JSONUtils.json2JavaObject(result.getJSONObject(i), classmate);
+                        mData.add(classmate);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+        };
+        asyncTask.execute();
     }
     
     private class _OnItemClickListener implements OnItemClickListener {
@@ -75,24 +120,24 @@ public class ClassmateListFragment extends BaseFragment {
         }
     }
 
-    private static class _Adapter extends BaseAdapter {
+    private static class ClassmateAdapter extends BaseAdapter {
         
         private Context mContext;
-        private JSONArray mData;
+        private List<Classmate> mData;
         
-        public _Adapter(Context context, JSONArray data) {
+        public ClassmateAdapter(Context context, List<Classmate> data) {
             mContext = context;
             mData = data;
         }
 
         @Override
         public int getCount() {
-            return mData.length();
+            return mData.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return mData.opt(position);
+            return mData.get(position);
         }
 
         @Override
@@ -112,10 +157,9 @@ public class ClassmateListFragment extends BaseFragment {
                holder = (ViewHolder) convertView.getTag();
             }
             
-            JSONObject item = (JSONObject) getItem(position);
-            holder.name.setText(item.optString("name"));
-            holder.sex.setText(item.optString("sex"));
-            holder.phone.setText(item.optString("phone"));
+            Classmate item = (Classmate) getItem(position);
+            holder.name.setText(item.name);
+            holder.phone.setText(item.phone);
             return convertView;
         }
         
@@ -123,11 +167,40 @@ public class ClassmateListFragment extends BaseFragment {
             @ViewInject(id = R.id.name)
             TextView name;
             
-            @ViewInject(id = R.id.sex)
-            TextView sex;
-            
             @ViewInject(id = R.id.phone)
             TextView phone;
         }
+    }
+    
+    private class Classmate {
+        @JSONDict(name = "u_address", defVal = "")
+        public String address;
+        
+        @JSONDict(name = "u_cellphone", defVal = "")
+        public String phone;
+        
+        @JSONDict(name = "u_city", defVal = "")
+        public String city;
+        
+        @JSONDict(name = "u_email", defVal = "")
+        public String email;
+        
+        @JSONDict(name = "u_name", defVal = "")
+        public String name;
+        
+        @JSONDict(name = "u_qq", defVal = "")
+        public String qq;
+        
+        @JSONDict(name = "u_status", defVal = "")
+        public String status;
+        
+        @JSONDict(name = "u_weibo", defVal = "")
+        public String weibo;
+        
+        @JSONDict(name = "u_weixin", defVal = "")
+        public String weixin;
+        
+        @JSONDict(name = "u_work", defVal = "")
+        public String work;
     }
 }
