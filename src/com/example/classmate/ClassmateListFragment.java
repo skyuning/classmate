@@ -1,36 +1,30 @@
 package com.example.classmate;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.xframe.annotation.JSONUtils;
-import org.xframe.annotation.JSONUtils.JSONDict;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
+import org.xframe.http.XHttpCallbacks;
+import org.xframe.http.XHttpClient;
+import org.xframe.http.XHttpRequest;
 
 import com.example.classmate.common.BaseFragment;
+import com.example.classmate.common.CommonAdapter;
+import com.example.classmate.data.Classmate;
+import com.example.classmate.requests.ClassmateListRequest;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ClassmateListFragment extends BaseFragment {
 
@@ -54,52 +48,28 @@ public class ClassmateListFragment extends BaseFragment {
         mAdapter = new ClassmateAdapter(getActivity(), mData);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new _OnItemClickListener());
-//        loadOnePageData(1);
+        loadOnePageData(1);
 //        loadOnePageData(2);
         
         return mLayout;
     }
 
     private void loadOnePageData(int page) {
-        AsyncTask<Void, Void, JSONArray> asyncTask = new AsyncTask<Void, Void, JSONArray>() {
+        XHttpRequest listClassmate = new ClassmateListRequest(page);
+        XHttpClient.sendRequest(listClassmate, new XHttpCallbacks.DefaultHttpCallback() {
             @Override
-            protected JSONArray doInBackground(Void... params) {
-                String url = "http://192.168.1.10:8080/Classmate/app/user.jsp?action=list&page=1&size=9";
-                HttpGet get = new HttpGet(url);
-                HttpClient client = new DefaultHttpClient();
-                HttpResponse response;
-                try {
-                    response = client.execute(get);
-                    String content = EntityUtils.toString(response.getEntity());
-                    JSONArray ja = new JSONArray(content);
-                    return ja;
-                } catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-            @Override
-            protected void onPostExecute(JSONArray result) {
-                if (result == null)
-                    return;
-                
-                for (int i=0; i<result.length(); i++) {
-                    try {
-                        Classmate classmate = new Classmate();
-                        JSONUtils.json2JavaObject(result.getJSONObject(i), classmate);
-                        mData.add(classmate);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+            public void onSuccess(AHttpResult result) {
+                @SuppressWarnings("unchecked")
+                List<Classmate> data = (List<Classmate>) result.data;
+                mData.addAll(data);
                 mAdapter.notifyDataSetChanged();
+            };
+            
+            @Override
+            public void onFaild(AHttpResult result) {
+                Toast.makeText(getActivity(), result.e.getMessage(), Toast.LENGTH_LONG).show();
             }
-        };
-        asyncTask.execute();
+        });
     }
     
     private class _OnItemClickListener implements OnItemClickListener {
@@ -112,47 +82,31 @@ public class ClassmateListFragment extends BaseFragment {
         }
     }
 
-    private static class ClassmateAdapter extends BaseAdapter {
+    private static class ClassmateAdapter extends CommonAdapter {
         
-        private Context mContext;
-        private List<Classmate> mData;
-        
-        public ClassmateAdapter(Context context, List<Classmate> data) {
-            mContext = context;
-            mData = data;
+        public ClassmateAdapter(Context context, List<?> data) {
+            super(context, data);
+            // TODO Auto-generated constructor stub
         }
 
-        @Override
-        public int getCount() {
-            return mData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
-            if (null == convertView) {
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_classmate, null);
-                holder = new ViewHolder();
-                ViewAnnotation.bind(convertView, holder);
-                convertView.setTag(holder);
-            } else {
-               holder = (ViewHolder) convertView.getTag();
-            }
+            View v = super.getView(position, convertView, parent);
+            ViewHolder holder = (ViewHolder) v.getTag();
             
             Classmate item = (Classmate) getItem(position);
             holder.name.setText(item.name);
             holder.phone.setText(item.phone);
-            return convertView;
+            return v;
+        }
+        
+        @Override
+        protected Object newViewHolder() {
+            return new ViewHolder();
+        }
+
+        @Override
+        protected int getResId() {
+            return R.layout.listitem_classmate;
         }
         
         private static class ViewHolder {
@@ -162,37 +116,5 @@ public class ClassmateListFragment extends BaseFragment {
             @ViewInject(id = R.id.phone)
             TextView phone;
         }
-    }
-    
-    private class Classmate {
-        @JSONDict(name = "u_address", defVal = "")
-        public String address;
-        
-        @JSONDict(name = "u_cellphone", defVal = "")
-        public String phone;
-        
-        @JSONDict(name = "u_city", defVal = "")
-        public String city;
-        
-        @JSONDict(name = "u_email", defVal = "")
-        public String email;
-        
-        @JSONDict(name = "u_name", defVal = "")
-        public String name;
-        
-        @JSONDict(name = "u_qq", defVal = "")
-        public String qq;
-        
-        @JSONDict(name = "u_status", defVal = "")
-        public String status;
-        
-        @JSONDict(name = "u_weibo", defVal = "")
-        public String weibo;
-        
-        @JSONDict(name = "u_weixin", defVal = "")
-        public String weixin;
-        
-        @JSONDict(name = "u_work", defVal = "")
-        public String work;
     }
 }

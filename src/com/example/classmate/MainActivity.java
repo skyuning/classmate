@@ -24,7 +24,7 @@ public class MainActivity extends FragmentActivity {
     private static final String[] titles = new String[] { "同学们", "纪念日", "新鲜事",
             "设置" };
     private static final Class<?>[] fragmentClasses = new Class<?>[] {
-            ClassmateListFragment.class, CommemorationListFragment.class,
+            ClassmateListFragment.class, HolidayListFragment.class,
             NewsListFragment.class, MoreFragment.class };
 
     @Override
