@@ -58,14 +58,6 @@ public class ClassmateListFragment extends BaseFragment {
 //        loadOnePageData(2);
         
         return mLayout;
-//        JSONArray data = null;
-//        try {
-//            data = getListData();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
-//            return mLayout;
-//        }
     }
 
     private void loadOnePageData(int page) {

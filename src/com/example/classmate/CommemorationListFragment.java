@@ -13,8 +13,12 @@ import org.xframe.annotation.JSONUtils;
 import org.xframe.annotation.JSONUtils.JSONDict;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
+import org.xframe.http.XHttpCallbacks;
+import org.xframe.http.XHttpClient;
+import org.xframe.http.XHttpRequest;
 
 import com.example.classmate.common.BaseFragment;
+import com.example.classmate.common.CommonAdapter;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -24,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -53,65 +56,19 @@ public class CommemorationListFragment extends BaseFragment {
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new _OnItemClickListener());
         loadOnePageData(1);
-        loadOnePageData(2);
 
         return mLayout;
-        // JSONArray data = null;
-        // try {
-        // data = getListData();
-        // } catch (JSONException e) {
-        // e.printStackTrace();
-        // Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
-        // return mLayout;
-        // }
     }
 
     private void loadOnePageData(int page) {
-        AsyncTask<Void, Void, JSONArray> asyncTask = new AsyncTask<Void, Void, JSONArray>() {
+        XHttpClient.sendRequest(new _Request(), new XHttpCallbacks.DebugHttpCallback(getActivity()) {
             @Override
-            protected JSONArray doInBackground(Void... params) {
-                String url = "http://192.168.1.10:8080/Classmate/app/holiday?action=list&page=1&size=3";
-                HttpGet get = new HttpGet(url);
-                HttpClient client = new DefaultHttpClient();
-                HttpResponse response;
-                try {
-//                    response = client.execute(get);
-//                    String content = EntityUtils.toString(response.getEntity());
-                    String content = "[{\"date\":1331481600000,\"description\":\"韩梅梅生日啦\",\"holidayid\":\"2\",\"title\":\"韩梅梅生日\",\"userid\":0},"
-                            + "{\"date\":1355241600000,\"description\":\"李雪生日啦\",\"    holidayid\":\"3\",\"title\":\"李雪生日\",\"userid\":0},"
-                            + "{\"category\":\"纪念日\",\"date\":1364745600000,\"description\":\"毕业10周年纪念日\",\"holidayid\":\"1\",\"photourl\":\"http://localhost\",\"title\":\"毕业纪念日\",\"userid\":1}]";
-
-                    JSONArray ja = new JSONArray(content);
-                    return ja;
-//                } catch (ClientProtocolException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(JSONArray result) {
-                if (result == null)
-                    return;
-
-                for (int i = 0; i < result.length(); i++) {
-                    try {
-                        Commemoration commemoration = new Commemoration();
-                        JSONUtils.json2JavaObject(result.getJSONObject(i),
-                                commemoration);
-                        mData.add(commemoration);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+            public void onSuccess(AHttpResult result) {
+                List<Commemoration> data = (List<Commemoration>) result.data;
+                mData.addAll(data);
                 mAdapter.notifyDataSetChanged();
-            }
-        };
-        asyncTask.execute();
+            };
+        });
     }
 
     private class _OnItemClickListener implements OnItemClickListener {
@@ -127,49 +84,64 @@ public class CommemorationListFragment extends BaseFragment {
         }
     }
 
-    private static class CommemorationAdapter extends BaseAdapter {
-
-        private Context mContext;
-        private List<Commemoration> mData;
-
-        public CommemorationAdapter(Context context, List<Commemoration> data) {
-            mContext = context;
-            mData = data;
-        }
+    private class _Request extends XHttpRequest {
 
         @Override
-        public int getCount() {
-            return mData.size();
-        }
+        public Object handleResponse(HttpResponse response, String content)
+                throws Exception {
+            List<Commemoration> data = new ArrayList<Commemoration>();
+            content = "[{\"date\":1331481600000,\"description\":\"韩梅梅生日啦\",\"holidayid\":\"2\",\"title\":\"韩梅梅生日\",\"userid\":0},"
+                    + "{\"date\":1355241600000,\"description\":\"李雪生日啦\",\"    holidayid\":\"3\",\"title\":\"李雪生日\",\"userid\":0},"
+                    + "{\"category\":\"纪念日\",\"date\":1364745600000,\"description\":\"毕业10周年纪念日\",\"holidayid\":\"1\",\"photourl\":\"http://localhost\",\"title\":\"毕业纪念日\",\"userid\":1}]";
 
-        @Override
-        public Object getItem(int position) {
-            return mData.get(position);
-        }
+            JSONArray ja = new JSONArray(content);
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
-            if (null == convertView) {
-                convertView = LayoutInflater.from(mContext).inflate(
-                        R.layout.listitem_notify, null);
-                holder = new ViewHolder();
-                ViewAnnotation.bind(convertView, holder);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
+            for (int i = 0; i < ja.length(); i++) {
+                try {
+                    Commemoration commemoration = new Commemoration();
+                    JSONUtils.json2JavaObject(ja.getJSONObject(i),
+                            commemoration);
+                    data.add(commemoration);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+            return data;
+        }
+
+        @Override
+        protected String buildUrl() {
+            String url = "http://192.168.1.10:8080/Classmate/app/holiday?action=list&page=1&size=3";
+            return url;
+        }
+
+    }
+
+    private static class CommemorationAdapter extends CommonAdapter {
+
+        public CommemorationAdapter(Context context, List<Commemoration> mData) {
+            super(context, mData);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = super.getView(position, convertView, parent);
+            ViewHolder holder = (ViewHolder) v.getTag();
 
             Commemoration item = (Commemoration) getItem(position);
             holder.title.setText(item.title);
             holder.desc.setText(item.desc);
             holder.date.setText(item.date);
             return convertView;
+        }
+
+        @Override
+        protected Object newViewHolder() {
+            return new ViewHolder();
+        }
+
+        @Override
+        protected int getResId() {
+            return R.layout.listitem_notify;
         }
 
         private static class ViewHolder {
