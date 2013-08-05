@@ -100,7 +100,7 @@ public class HolidayListFragment extends BaseFragment {
 
         @Override
         protected int getResId() {
-            return R.layout.listitem_notify;
+            return R.layout.listitem_holiday;
         }
 
         private static class ViewHolder {
