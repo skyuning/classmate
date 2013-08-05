@@ -33,6 +33,10 @@
             android:name="com.example.classmate.ClassmateActivity"
             android:label="@string/title_activity_classmate" >
         </activity>
+        <activity
+            android:name="com.example.classmate.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
     </application>
 
 </manifest>
