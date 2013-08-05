@@ -27,7 +27,7 @@ public class WelcomeActivity extends Activity {
             
             @Override
             protected void onPostExecute(Void result) {
-                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
