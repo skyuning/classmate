@@ -9,7 +9,7 @@ import com.example.classmate.Conf;
 public class LoginRequest extends XHttpRequest {
     
     public LoginRequest(String openid, String token) {
-        addParam("action", "add");
+        addParam("action", "update");
         addParam("openid", openid);
         addParam("token", token);
     }

@@ -1,5 +1,6 @@
 package com.example.classmate;
 
+import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpCallbacks.DefaultHttpCallback;
 import org.xframe.http.XHttpClient;
 import org.xframe.http.XHttpRequest;
@@ -21,19 +22,22 @@ public class LoginActivity extends Activity {
         
         XHttpRequest loginRequest = new LoginRequest("1234567890", "1234567789");
         loginRequest.addParam("name", "林云");
-        XHttpClient.sendRequest(loginRequest, new DefaultHttpCallback() {
-            @Override
-            public void onSuccess(AHttpResult result) {
-                if (result.data instanceof Boolean) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else if (result.data instanceof String) {
-                    Toast.makeText(LoginActivity.this, "登陆失败\n" + result.data,
-                            Toast.LENGTH_LONG).show();
-                }
-            };
-        });
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+//        XHttpClient.sendRequest(loginRequest, new XHttpCallbacks.DebugHttpCallback(this) {
+//            @Override
+//            public void onSuccess(AHttpResult result) {
+//                if (result.data instanceof Boolean) {
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                } else if (result.data instanceof String) {
+//                    Toast.makeText(LoginActivity.this, "登陆失败\n" + result.data,
+//                            Toast.LENGTH_LONG).show();
+//                }
+//            };
+//        });
     }
 
     @Override
