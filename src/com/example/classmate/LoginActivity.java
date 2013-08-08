@@ -1,50 +1,37 @@
 package com.example.classmate;
 
-import org.xframe.http.XHttpCallbacks;
-import org.xframe.http.XHttpCallbacks.DefaultHttpCallback;
-import org.xframe.http.XHttpClient;
-import org.xframe.http.XHttpRequest;
-
-import com.example.classmate.requests.LoginRequest;
+import org.xframe.annotation.ViewAnnotation;
+import org.xframe.annotation.ViewAnnotation.ViewInject;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
-import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements OnClickListener {
+
+    @ViewInject(id = R.id.login)
+    private Button mLoginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        
-        XHttpRequest loginRequest = new LoginRequest("1234567890", "1234567789");
-        loginRequest.addParam("name", "林云");
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
-//        XHttpClient.sendRequest(loginRequest, new XHttpCallbacks.DebugHttpCallback(this) {
-//            @Override
-//            public void onSuccess(AHttpResult result) {
-//                if (result.data instanceof Boolean) {
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                } else if (result.data instanceof String) {
-//                    Toast.makeText(LoginActivity.this, "登陆失败\n" + result.data,
-//                            Toast.LENGTH_LONG).show();
-//                }
-//            };
-//        });
+        ViewAnnotation.bind(getWindow().getDecorView(), this);
+
+        mLoginBtn.setOnClickListener(this);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
-
+    public void onClick(View v) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        // String scope = "get_simple_userinfo, add_topic";
+        // mTencent = Tencent.createInstance(Conf.APPID, this);
+        // mTencent.login(this, scope, this);
+        // TencentOpenAPI2.logIn(this, "", scope, Conf.APPID, "_self",
+        // "auth://tauth.qq.com/", null, null);
+    };
 }

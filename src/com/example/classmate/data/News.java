@@ -8,16 +8,20 @@ public class News {
     @JSONDict(name = "newsphoto", defVal = "")
     public String photo;
 
-    @JSONDict(name = "reviewlist",
-            defVal = "[{'comment': 'comment1'}, {'comment': 'comment2'}]",
-            type = Review.class)
+    @JSONDict(name = "reviewlist", defVal = "[]", type = Review.class)
     public List<Review> reviewList;
 
     @JSONDict(name = "reviewnum", defVal = "0")
     public int reviewNum;
 
     public static class Review {
-        @JSONDict(name = "comment", defVal = "no comment")
-        public String comment;
+        @JSONDict(name = "cdate", defVal = "0000-00-00 00:00:00")
+        public String date;
+        
+        @JSONDict(name = "cinfo", defVal = "0000-00-00 00:00:00")
+        public String info;
+        
+        @JSONDict(name = "u_name", defVal = "0000-00-00 00:00:00")
+        public String username;
     }
 }

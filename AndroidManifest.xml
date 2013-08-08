@@ -26,16 +26,29 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.example.classmate.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent100493916" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.example.classmate.MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.example.classmate.ClassmateActivity"
             android:label="@string/title_activity_classmate" >
-        </activity>
-        <activity
-            android:name="com.example.classmate.LoginActivity"
-            android:label="@string/title_activity_login" >
         </activity>
     </application>
 

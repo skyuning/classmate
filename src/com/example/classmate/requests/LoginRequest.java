@@ -2,10 +2,13 @@ package com.example.classmate.requests;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONObject;
+import org.xframe.http.XHttpAttr;
 import org.xframe.http.XHttpRequest;
+import org.xframe.http.XHttpRequest.XHttpMethod;
 
 import com.example.classmate.Conf;
 
+@XHttpAttr(method = XHttpMethod.GET)
 public class LoginRequest extends XHttpRequest {
     
     public LoginRequest(String openid, String token) {

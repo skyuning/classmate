@@ -131,10 +131,13 @@ public class NewsListFragment extends BaseFragment {
             News item = (News) getItem(position);
             holder.photo.setImageResource(R.drawable.ic_launcher);
             holder.more.setText(String.format("共%d条评论", item.reviewNum));
+            
             if (null != item.reviewList) {
+                holder.reviews.removeAllViews();
                 for (Review review : item.reviewList) {
                     TextView textView = new TextView(mContext);
-                    textView.setText(review.comment);
+                    textView.setText(review.info);
+                    holder.reviews.addView(textView);
                 }
             }
             return v;
@@ -153,7 +156,7 @@ public class NewsListFragment extends BaseFragment {
         private static class ViewHolder {
             @ViewInject(id = R.id.photo)
             ImageView photo;
-
+            
             @ViewInject(id = R.id.reviews)
             LinearLayout reviews;
 

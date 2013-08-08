@@ -6,28 +6,32 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.xframe.annotation.JSONUtils;
+import org.xframe.http.XHttpAttr;
 import org.xframe.http.XHttpRequest;
+import org.xframe.http.XHttpRequest.XHttpMethod;
 
 import com.example.classmate.Conf;
 import com.example.classmate.data.Holiday;
 
+@XHttpAttr(method = XHttpMethod.GET)
 public class HolidayListRequest extends XHttpRequest {
-    
+
     public HolidayListRequest(int page) {
         addParam("action", "list");
         addParam("page", page);
     }
 
     @Override
-    public Object handleResponse(HttpResponse response, String content) throws Exception {
+    public Object handleResponse(HttpResponse response, String content)
+            throws Exception {
         List<Holiday> data = new ArrayList<Holiday>();
         JSONArray result = new JSONArray(content);
-        for (int i=0; i<result.length(); i++) {
+        for (int i = 0; i < result.length(); i++) {
             Holiday holiday = new Holiday();
             JSONUtils.json2JavaObject(result.getJSONObject(i), holiday);
             data.add(holiday);
         }
-        
+
         return data;
     }
 
