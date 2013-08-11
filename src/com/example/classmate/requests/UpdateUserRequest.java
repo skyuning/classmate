@@ -8,15 +8,12 @@ import org.xframe.http.XHttpRequest;
 import org.xframe.http.XHttpRequest.XHttpMethod;
 
 import com.example.classmate.common.Conf;
-import com.example.classmate.common.Test;
 
 @XHttpAttr(method = XHttpMethod.POST)
-public class AddNewsRequest extends XHttpRequest {
-    
-    private String mInfo;
-    
-    public AddNewsRequest(String photoPath, String info) throws UnsupportedEncodingException {
-        mInfo = info;
+public class UpdateUserRequest extends XHttpRequest {
+
+    public UpdateUserRequest(String photoPath)
+            throws UnsupportedEncodingException {
         addMultipartFile("photo", photoPath, "image/jpeg");
     }
 
@@ -29,8 +26,6 @@ public class AddNewsRequest extends XHttpRequest {
 
     @Override
     protected String buildUrl() {
-        String url = String.format(Conf.HOST + Conf.PATH  + "news?action=add&token=%s&info=%s",
-                Test.token, mInfo);
-        return url;
+        return Conf.HOST + Conf.PATH + "user.jsp?action=update&token=123457890&openid=" + Conf.APPID;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.classmate;
+package com.example.classmate.common;
 
 public class Conf {
 

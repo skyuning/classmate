@@ -2,13 +2,20 @@ package com.example.classmate;
 
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
+import org.xframe.http.XHttpCallbacks;
+import org.xframe.http.XHttpClient;
+import org.xframe.http.XHttpRequest;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.app.Activity;
-import android.content.Intent;
+import android.widget.Toast;
+
+import com.example.classmate.common.Test;
+import com.example.classmate.requests.LoginRequest;
 
 public class LoginActivity extends Activity implements OnClickListener {
 
@@ -26,8 +33,21 @@ public class LoginActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        XHttpRequest request = new LoginRequest(Test.openid, Test.token);
+        XHttpClient.sendRequest(request, new XHttpCallbacks.DebugHttpCallback(this) {
+            @Override
+            public void onSuccess(AHttpResult result) {
+                super.onSuccess(result);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFaild(AHttpResult result) {
+                super.onFaild(result);
+                Toast.makeText(LoginActivity.this, result.e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
         // String scope = "get_simple_userinfo, add_topic";
         // mTencent = Tencent.createInstance(Conf.APPID, this);
         // mTencent.login(this, scope, this);

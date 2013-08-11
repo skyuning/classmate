@@ -1,18 +1,25 @@
 package com.example.classmate.data;
 
-import java.util.List;
-
 import org.xframe.annotation.JSONUtils.JSONDict;
 
 public class News {
-    @JSONDict(name = "newsphoto", defVal = "")
-    public String photo;
+    @JSONDict(name = "newsinfo", defVal = "")
+    public String info;
 
-    @JSONDict(name = "reviewlist", defVal = "[]", type = Review.class)
-    public List<Review> reviewList;
+    @JSONDict(name = "newsphoto", defVal = "")
+    public String newsPhoto;
 
     @JSONDict(name = "reviewnum", defVal = "0")
     public int reviewNum;
+
+    @JSONDict(name = "uname", defVal = "")
+    public int username;
+
+    @JSONDict(name = "uphoto", defVal = "")
+    public int userPhoto;
+
+//    @JSONDict(name = "reviewlist", defVal = "[]", type = Review.class)
+//    public List<Review> reviewList;
 
     public static class Review {
         @JSONDict(name = "cdate", defVal = "0000-00-00 00:00:00")

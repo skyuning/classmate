@@ -67,7 +67,7 @@ public class ClassmateListFragment extends BaseFragment {
             
             @Override
             public void onFaild(AHttpResult result) {
-                Toast.makeText(getActivity(), result.e.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), result.e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

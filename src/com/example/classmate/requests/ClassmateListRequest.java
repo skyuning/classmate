@@ -10,7 +10,7 @@ import org.xframe.http.XHttpAttr;
 import org.xframe.http.XHttpRequest;
 import org.xframe.http.XHttpRequest.XHttpMethod;
 
-import com.example.classmate.Conf;
+import com.example.classmate.common.Conf;
 import com.example.classmate.data.Classmate;
 
 @XHttpAttr(method = XHttpMethod.GET)

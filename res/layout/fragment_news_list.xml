@@ -14,7 +14,7 @@
     </ListView>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/user_profile"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

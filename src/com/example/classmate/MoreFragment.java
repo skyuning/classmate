@@ -5,17 +5,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.classmate.common.BaseFragment;
+
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,8 +27,11 @@ import android.widget.Toast;
 
 public class MoreFragment extends BaseFragment {
 
-    @ViewInject(id = R.id.listview)
-    private ListView mListView;
+//    @ViewInject(id = R.id.listview)
+//    private ListView mListView;
+    
+    @ViewInject(id = R.id.user_profile)
+    private Button mUerProfileBtn;
     
     private LinearLayout mLayout;
 
@@ -34,21 +41,30 @@ public class MoreFragment extends BaseFragment {
         
         setTitle("更多");
         
-        mLayout = (LinearLayout) inflater.inflate(R.layout.fragment_classmate_list, null);
+        mLayout = (LinearLayout) inflater.inflate(R.layout.fragment_more, null);
         ViewAnnotation.bind(mLayout, this);
         
-        JSONArray data = null;
-        try {
-            data = getListData();
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
-            return mLayout;
-        }
+        mUerProfileBtn.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         
-        _Adapter adapter = new _Adapter(getActivity(), data);
-        mListView.setAdapter(adapter);
-        mListView.setOnItemClickListener(new _OnItemClickListener());
+//        JSONArray data = null;
+//        try {
+//            data = getListData();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
+//            return mLayout;
+//        }
+//        
+//        _Adapter adapter = new _Adapter(getActivity(), data);
+//        mListView.setAdapter(adapter);
+//        mListView.setOnItemClickListener(new _OnItemClickListener());
         
         return mLayout;
     }

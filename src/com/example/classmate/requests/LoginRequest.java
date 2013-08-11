@@ -6,7 +6,7 @@ import org.xframe.http.XHttpAttr;
 import org.xframe.http.XHttpRequest;
 import org.xframe.http.XHttpRequest.XHttpMethod;
 
-import com.example.classmate.Conf;
+import com.example.classmate.common.Conf;
 
 @XHttpAttr(method = XHttpMethod.GET)
 public class LoginRequest extends XHttpRequest {
@@ -20,7 +20,7 @@ public class LoginRequest extends XHttpRequest {
     @Override
     public Object handleResponse(HttpResponse response, String content) throws Exception {
         JSONObject jo = new JSONObject(content);
-        if (jo.getInt("errCode") == 1)
+        if (jo.getInt("status") == 0)
             return true;
         else
             return jo.getString("errMsg");
@@ -28,7 +28,7 @@ public class LoginRequest extends XHttpRequest {
 
     @Override
     protected String buildUrl() {
-        return Conf.HOST + Conf.PATH + "user.jsp";
+        return Conf.HOST + Conf.PATH + "user";
     }
 
 }

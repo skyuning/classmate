@@ -14,7 +14,6 @@ import com.example.classmate.common.BaseFragment;
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.common.Utils;
 import com.example.classmate.data.News;
-import com.example.classmate.data.News.Review;
 import com.example.classmate.requests.AddNewsRequest;
 import com.example.classmate.requests.NewsListRequest;
 
@@ -42,7 +41,7 @@ public class NewsListFragment extends BaseFragment {
     @ViewInject(id = R.id.listview)
     private ListView mListView;
     
-    @ViewInject(id = R.id.button1)
+    @ViewInject(id = R.id.user_profile)
     private Button mButton;
 
     private LinearLayout mLayout;
@@ -129,17 +128,9 @@ public class NewsListFragment extends BaseFragment {
             ViewHolder holder = (ViewHolder) v.getTag();
 
             News item = (News) getItem(position);
-            holder.photo.setImageResource(R.drawable.ic_launcher);
-            holder.more.setText(String.format("共%d条评论", item.reviewNum));
+//            holder.photo.setImageResource(R.drawable.ic_launcher);
+            holder.reviewNum.setText(String.format("%d条评论", item.reviewNum));
             
-            if (null != item.reviewList) {
-                holder.reviews.removeAllViews();
-                for (Review review : item.reviewList) {
-                    TextView textView = new TextView(mContext);
-                    textView.setText(review.info);
-                    holder.reviews.addView(textView);
-                }
-            }
             return v;
         }
 
@@ -154,14 +145,14 @@ public class NewsListFragment extends BaseFragment {
         }
 
         private static class ViewHolder {
-            @ViewInject(id = R.id.photo)
+            @ViewInject(id = R.id.news_photo)
             ImageView photo;
             
-            @ViewInject(id = R.id.reviews)
-            LinearLayout reviews;
-
-            @ViewInject(id = R.id.more)
-            TextView more;
+            @ViewInject(id = R.id.news_info)
+            TextView info;
+            
+            @ViewInject(id = R.id.review_num)
+            TextView reviewNum;
         }
     }
 }

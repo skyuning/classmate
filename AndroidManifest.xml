@@ -50,6 +50,10 @@
             android:name="com.example.classmate.ClassmateActivity"
             android:label="@string/title_activity_classmate" >
         </activity>
+        <activity
+            android:name="com.example.classmate.UserProfileActivity"
+            android:label="@string/title_activity_user_profile" >
+        </activity>
     </application>
 
 </manifest>
