@@ -12,6 +12,7 @@ import org.xframe.http.XHttpClient;
 
 import com.example.classmate.common.BaseFragment;
 import com.example.classmate.common.CommonAdapter;
+import com.example.classmate.common.Conf;
 import com.example.classmate.common.Utils;
 import com.example.classmate.data.News;
 import com.example.classmate.requests.AddNewsRequest;
@@ -128,7 +129,11 @@ public class NewsListFragment extends BaseFragment {
             ViewHolder holder = (ViewHolder) v.getTag();
 
             News item = (News) getItem(position);
-//            holder.photo.setImageResource(R.drawable.ic_launcher);
+            holder.photo.setImageBitmap(null);
+            holder.photo.setVisibility(View.GONE);
+            String imgUrl = Conf.IMAGE_ROOT + item.newsPhoto;
+            holder.photo.setTag(imgUrl);
+            ImageLoader.loadImage(holder.photo);
             holder.reviewNum.setText(String.format("%d条评论", item.reviewNum));
             
             return v;
