@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 
 public class WelcomeActivity extends Activity {
@@ -19,20 +20,27 @@ public class WelcomeActivity extends Activity {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 return null;
             }
-            
+
             @Override
             protected void onPostExecute(Void result) {
-                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                onPostLoading();
             }
         };
         asyncTask.execute();
+    }
+
+    private void onPostLoading() {
+        SharedPreferences sp = getSharedPreferences("session", MODE_PRIVATE);
+        String token = sp.getString("token", null);
+        if (null != token)
+            startActivity(new Intent(this, MainActivity.class));
+        else
+            startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     @Override

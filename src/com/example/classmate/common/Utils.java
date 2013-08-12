@@ -9,21 +9,20 @@ public class Utils {
 
     @SuppressWarnings("deprecation")
     public static String uri2Path(Activity activity, Uri uri) {
-        String imagePath = uri.getPath();
-        if (uri.toString().startsWith("content://")) {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            Cursor cursor = activity.managedQuery(uri, proj, null, null, null);
-            if (cursor != null) {
-                try {
-                    int idx = cursor
-                            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    if (cursor.moveToFirst()) {
-                        imagePath = cursor.getString(idx);
-                    }
-                } catch (IllegalArgumentException e) {
-                }
-            }
+        String[] columns = { MediaStore.Images.Media.DATA };
+        Cursor cursor = activity.managedQuery(uri, columns, null, null, null);
+        if (cursor == null)
+            return null;
+
+        try {
+            int idx = cursor.getColumnIndexOrThrow(columns[0]);
+            if (cursor.moveToFirst())
+                return cursor.getString(idx);
+            else
+                return null;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
         }
-        return imagePath;
     }
 }

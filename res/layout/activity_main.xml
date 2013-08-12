@@ -8,36 +8,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
+        
+        <FrameLayout
+            android:id="@+id/title_frame"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" >
-<!-- 
-            <fragment
-                android:id="@+id/classmate_list_fragment"
-                android:name="com.example.classmate.ClassmateListFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <fragment
-                android:id="@+id/commemoration_list_fragment"
-                android:name="com.example.classmate.CommemorationListFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <fragment
-                android:id="@+id/news_list_fragment"
-                android:name="com.example.classmate.NewsListFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <fragment
-                android:id="@+id/more_fragment"
-                android:name="com.example.classmate.MoreFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" / -->
         </FrameLayout>
 
         <TabWidget

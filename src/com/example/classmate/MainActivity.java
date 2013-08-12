@@ -3,7 +3,6 @@ package com.example.classmate;
 import java.lang.reflect.InvocationTargetException;
 
 import org.xframe.annotation.ViewAnnotation;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,7 +17,7 @@ import android.widget.TabHost.TabSpec;
 public class MainActivity extends FragmentActivity {
 
     private TabHost mTabHost;
-
+    
     private static final String[] tags = new String[] { "classmate_list",
             "commemoration_list", "news_list", "more" };
     private static final String[] titles = new String[] { "同学们", "纪念日", "新鲜事",
@@ -30,6 +29,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_main);
         ViewAnnotation.bind(getWindow().getDecorView(), this);
 

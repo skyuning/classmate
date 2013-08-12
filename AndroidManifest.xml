@@ -14,8 +14,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@android:style/Theme.Black" >
+        android:label="@string/app_name" >
         <activity
             android:name="com.example.classmate.WelcomeActivity"
             android:label="@string/title_activity_welcome" >
@@ -44,7 +43,8 @@
         </activity>
         <activity
             android:name="com.example.classmate.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.NoActionBar" >
         </activity>
         <activity
             android:name="com.example.classmate.ClassmateActivity"
@@ -53,6 +53,10 @@
         <activity
             android:name="com.example.classmate.UserProfileActivity"
             android:label="@string/title_activity_user_profile" >
+        </activity>
+        <activity
+            android:name="com.example.classmate.PublishNewsActivity"
+            android:label="@string/title_activity_publish_news" >
         </activity>
     </application>
 

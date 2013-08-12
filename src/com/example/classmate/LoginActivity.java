@@ -8,6 +8,7 @@ import org.xframe.http.XHttpRequest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,8 +39,11 @@ public class LoginActivity extends Activity implements OnClickListener {
             @Override
             public void onSuccess(AHttpResult result) {
                 super.onSuccess(result);
+                SharedPreferences sp = getSharedPreferences("session", MODE_PRIVATE);
+                sp.edit().putString("token", Test.token).commit();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override

@@ -1,7 +1,5 @@
 package com.example.classmate;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +11,9 @@ import org.xframe.http.XHttpClient;
 import com.example.classmate.common.BaseFragment;
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.common.Conf;
-import com.example.classmate.common.Utils;
 import com.example.classmate.data.News;
-import com.example.classmate.requests.AddNewsRequest;
 import com.example.classmate.requests.NewsListRequest;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,22 +23,18 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class NewsListFragment extends BaseFragment {
     
-    private static final int REQUEST_CHOOSE_PHOTO = 11;
-
     @ViewInject(id = R.id.listview)
     private ListView mListView;
     
-    @ViewInject(id = R.id.user_profile)
-    private Button mButton;
+    private ImageButton mPublishNewsBtn;
 
     private LinearLayout mLayout;
     private List<News> mData;
@@ -52,19 +43,22 @@ public class NewsListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-        setTitle("纪念日");
+        setTitle("新鲜事");
 
         mLayout = (LinearLayout) inflater.inflate(
                 R.layout.fragment_news_list, null);
         ViewAnnotation.bind(mLayout, this);
         
-        mButton.setOnClickListener(new OnClickListener() {
+        mPublishNewsBtn = getRightImgBtn();
+        mPublishNewsBtn.setVisibility(View.VISIBLE);
+        mPublishNewsBtn.setImageResource(android.R.drawable.ic_menu_edit);
+        mPublishNewsBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
+                Intent intent = new Intent(getActivity(), PublishNewsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -75,22 +69,6 @@ public class NewsListFragment extends BaseFragment {
         loadOnePageData(1);
 
         return mLayout;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode == REQUEST_CHOOSE_PHOTO) && (resultCode == Activity.RESULT_OK)) {
-            String path = Utils.uri2Path(getActivity(), data.getData());
-            File f = new File(path);
-            Toast.makeText(getActivity(), "" + f.length(), Toast.LENGTH_LONG).show();
-            try {
-                XHttpClient.sendRequest(new AddNewsRequest(path, "hahaha"), new XHttpCallbacks.DebugHttpCallback(getActivity()));
-            } catch (UnsupportedEncodingException e) {
-                Toast.makeText(getActivity(), "上传失败", Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void loadOnePageData(int page) {

@@ -35,11 +35,12 @@ public class HolidayListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         setTitle("纪念日");
 
         mLayout = (LinearLayout) inflater.inflate(
-                R.layout.fragment_classmate_list, null);
+                R.layout.fragment_holiday_list, null);
         ViewAnnotation.bind(mLayout, this);
 
         mData = new ArrayList<Holiday>();
