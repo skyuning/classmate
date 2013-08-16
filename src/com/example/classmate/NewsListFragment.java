@@ -52,16 +52,16 @@ public class NewsListFragment extends BaseFragment {
                 R.layout.fragment_news_list, null);
         ViewAnnotation.bind(mLayout, this);
         
-        mPublishNewsBtn = getRightImgBtn();
-        mPublishNewsBtn.setVisibility(View.VISIBLE);
-        mPublishNewsBtn.setImageResource(android.R.drawable.ic_menu_edit);
-        mPublishNewsBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), PublishNewsActivity.class);
-                startActivity(intent);
-            }
-        });
+//        mPublishNewsBtn = getRightImgBtn();
+//        mPublishNewsBtn.setVisibility(View.VISIBLE);
+//        mPublishNewsBtn.setImageResource(android.R.drawable.ic_menu_edit);
+//        mPublishNewsBtn.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), PublishNewsActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         mData = new ArrayList<News>();
         mAdapter = new NewsAdapter(getActivity(), mData);
