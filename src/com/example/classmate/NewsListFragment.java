@@ -17,6 +17,7 @@ import com.example.classmate.requests.NewsListRequest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -96,7 +97,7 @@ public class NewsListFragment extends BaseFragment {
         }
     }
 
-    private static class NewsAdapter extends CommonAdapter {
+    private class NewsAdapter extends CommonAdapter {
 
         public NewsAdapter(Context context, List<News> mData) {
             super(context, mData);
@@ -107,12 +108,16 @@ public class NewsListFragment extends BaseFragment {
             ViewHolder holder = (ViewHolder) v.getTag();
 
             News item = (News) getItem(position);
-            holder.photo.setImageBitmap(null);
-            holder.photo.setVisibility(View.GONE);
-            String imgUrl = Conf.IMAGE_ROOT + item.newsPhoto;
-            holder.photo.setTag(imgUrl);
-            ImageLoader.loadImage(holder.photo);
+            holder.info.setText(item.info);
             holder.reviewNum.setText(String.format("%d条评论", item.reviewNum));
+            
+            if (TextUtils.isEmpty(item.newsPhoto))
+                holder.photo.setVisibility(View.GONE);
+            else {
+                String imgUrl = Conf.IMAGE_ROOT + item.newsPhoto;
+                holder.photo.setTag(imgUrl);
+                ImageLoader.loadImage(holder.photo);
+            }
             
             return v;
         }
@@ -127,7 +132,7 @@ public class NewsListFragment extends BaseFragment {
             return R.layout.listitem_news;
         }
 
-        private static class ViewHolder {
+        private class ViewHolder {
             @ViewInject(id = R.id.news_photo)
             ImageView photo;
             
