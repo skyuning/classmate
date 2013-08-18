@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
+import org.xframe.http.XHttpCallback.AHttpResult;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpClient;
 
@@ -47,7 +48,7 @@ public class PublishNewsActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_news);
         ViewAnnotation.bind(getWindow().getDecorView(), this);
-        
+
         mPublishBtn.setOnClickListener(this);
     }
 
@@ -72,8 +73,17 @@ public class PublishNewsActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
         case R.id.publish:
             try {
-                XHttpClient.sendRequest(new AddNewsRequest(mImgPath, mNewsInfo.getText().toString()),
-                        new XHttpCallbacks.DebugHttpCallback(this));
+                XHttpClient.sendRequest(
+                        new AddNewsRequest(this, mImgPath, mNewsInfo.getText().toString()),
+                        new XHttpCallbacks.DebugHttpCallback(this) {
+
+                            @Override
+                            public void onSuccess(AHttpResult result) {
+                                Toast.makeText(PublishNewsActivity.this, "上传失败", Toast.LENGTH_LONG).show();
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        });
             } catch (UnsupportedEncodingException e) {
                 Toast.makeText(this, "上传失败", Toast.LENGTH_LONG).show();
                 e.printStackTrace();

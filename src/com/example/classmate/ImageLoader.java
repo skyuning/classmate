@@ -6,14 +6,29 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.view.View;
 import android.widget.ImageView;
 
 public class ImageLoader {
-    public static void loadImage(final ImageView iv) {
+    
+    private static int loadingImageResId = android.R.drawable.stat_notify_sync;
+    private static int faildImageResId = android.R.drawable.ic_menu_report_image;
+    
+    public static void loadImage(final Context context, final ImageView iv) {
+        String path = (String) iv.getTag();
+        Bitmap bm = ClassmateApp.sImageCache.get(path);
+        if (null != bm) {
+            iv.setImageBitmap(bm);
+        } else {
+            iv.setImageResource(loadingImageResId);
+            asyncLoadImage(context, iv);
+        }
+    }
+    
+    public static void asyncLoadImage(final Context context, final ImageView iv) {
         final String path = (String) iv.getTag();
                 
         AsyncTask<Void, Void, Bitmap> asyncTask = new AsyncTask<Void, Void, Bitmap>() {
@@ -31,21 +46,25 @@ public class ImageLoader {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (OutOfMemoryError e) {
+                    e.printStackTrace();
                 }
                 return null;
             }
 
             @Override
             protected void onPostExecute(Bitmap result) {
-                if (null == result)
-                    return;
                 if (! path.equals(iv.getTag()))
                     return;
-                
-                iv.setImageBitmap(result);
-                iv.setVisibility(View.VISIBLE);
+                if (null == result) {
+                    result = BitmapFactory.decodeResource(context.getResources(), faildImageResId);
+                    iv.setImageBitmap(result);
+                } else {
+                    iv.setImageBitmap(result);
+                }
+                ClassmateApp.sImageCache.put(path, result);
             }
         };
-        asyncTask.execute();
+        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

@@ -53,7 +53,8 @@ public class HolidayListFragment extends BaseFragment {
     }
 
     private void loadOnePageData(int page) {
-        XHttpClient.sendRequest(new HolidayListRequest(page), new XHttpCallbacks.DefaultHttpCallback() {
+        XHttpClient.sendRequest(new HolidayListRequest(getActivity(), page),
+                new XHttpCallbacks.DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {
                 @SuppressWarnings("unchecked")

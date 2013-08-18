@@ -55,7 +55,7 @@ public class ClassmateListFragment extends BaseFragment {
     }
 
     private void loadOnePageData(int page) {
-        XHttpRequest listClassmate = new ClassmateListRequest(page);
+        XHttpRequest listClassmate = new ClassmateListRequest(getActivity(), page);
         XHttpClient.sendRequest(listClassmate, new XHttpCallbacks.DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {

@@ -2,12 +2,16 @@ package com.example.classmate.data;
 
 import org.xframe.annotation.JSONUtils.JSONDict;
 
+import com.example.classmate.data.Status.LoadStatus;
+
 public class News {
     @JSONDict(name = "newsinfo", defVal = "")
     public String info;
 
     @JSONDict(name = "newsphoto", defVal = "")
     public String newsPhoto;
+    
+    public LoadStatus newsPhotoStatus = LoadStatus.UNLOADED;
 
     @JSONDict(name = "reviewnum", defVal = "0")
     public int reviewNum;

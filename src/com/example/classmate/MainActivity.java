@@ -46,6 +46,15 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        if (intent.getBooleanExtra("session_timeout", false)) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+        super.onNewIntent(intent);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         switch (mActionBar.getSelectedNavigationIndex()) {
