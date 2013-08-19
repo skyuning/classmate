@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xframe.annotation.JSONUtils;
 import org.xframe.http.XHttpAttr;
-import org.xframe.http.XHttpRequest;
 import org.xframe.http.XHttpRequest.XHttpMethod;
 
 import android.content.Context;
@@ -16,6 +15,7 @@ import android.content.Context;
 import com.example.classmate.common.Conf;
 import com.example.classmate.data.Holiday;
 
+@Deprecated
 @XHttpAttr(method = XHttpMethod.GET)
 public class HolidayListRequest extends BaseRequest {
 

@@ -15,6 +15,7 @@ import android.content.Context;
 import com.example.classmate.common.Conf;
 import com.example.classmate.data.Classmate;
 
+@Deprecated
 @XHttpAttr(method = XHttpMethod.GET)
 public class ClassmateListRequest extends BaseRequest {
 

@@ -13,9 +13,11 @@ import org.xframe.http.XHttpClient;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import com.example.classmate.common.BaseActivity;
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.common.Conf;
 import com.example.classmate.data.News;
+import com.example.classmate.data.News.Review;
 import com.example.classmate.requests.ListRequest;
 import com.example.classmate.utils.ImageLoader;
 
@@ -35,6 +38,10 @@ public class NewsDetailActivity extends BaseActivity {
 
     private List<JSONObject> mData;
     private ReviewAdapter mAdapter;
+    private View mHeaderView;
+    private View mFooterView;
+    private EditText mEditText;
+    private Button mSubmitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +59,16 @@ public class NewsDetailActivity extends BaseActivity {
             return;
         }
 
-        ImageView iv = new ImageView(this);
-        iv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT));
+        mHeaderView = getLayoutInflater().inflate(R.layout.review_header, null);
+        ImageView iv = (ImageView) mHeaderView.findViewById(R.id.image);
         iv.setTag(Conf.IMAGE_ROOT + mNews.newsPhoto);
         ImageLoader.loadImage(this, iv);
-        mListView.addHeaderView(iv);
+        mListView.addHeaderView(mHeaderView, null, false);
+        
+        mFooterView = getLayoutInflater().inflate(R.layout.review_footer, null);
+        mEditText = (EditText) mFooterView.findViewById(R.id.edit);
+        mSubmitBtn = (Button) mFooterView.findViewById(R.id.submit);
+        mListView.addFooterView(mFooterView, null, false);
 
         mData = new ArrayList<JSONObject>();
         mAdapter = new ReviewAdapter(this, mData);
@@ -92,19 +103,34 @@ public class NewsDetailActivity extends BaseActivity {
             View v = super.getView(position, convertView, parent);
             ViewHolder holder = (ViewHolder) v.getTag();
 
-            JSONObject item = (JSONObject) getItem(position);
-            holder.text.setText(item.toString());
+            Review review = JSONUtils.json2JavaObject((JSONObject) getItem(position), new Review());
+            holder.info.setText(review.info);
+            holder.date.setText(review.date);
+            if (TextUtils.isEmpty(review.photo))
+                holder.photo.setVisibility(View.GONE);
+            else {
+                holder.photo.setVisibility(View.VISIBLE);
+                String imgUrl = Conf.IMAGE_ROOT + review.photo;
+                holder.photo.setTag(imgUrl);
+                ImageLoader.loadImage(mContext, holder.photo);
+            }
             return v;
         }
 
         @Override
         protected int getResId() {
-            return android.R.layout.simple_list_item_1;
+            return R.layout.listitem_review;
         }
 
         private class ViewHolder {
-            @ViewInject(id = android.R.id.text1)
-            TextView text;
+            @ViewInject(id = R.id.photo)
+            ImageView photo;
+            
+            @ViewInject(id = R.id.date)
+            TextView date;
+            
+            @ViewInject(id = R.id.info)
+            TextView info;
         }
     }
 }

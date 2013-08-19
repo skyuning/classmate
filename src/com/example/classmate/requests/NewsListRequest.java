@@ -14,6 +14,7 @@ import org.xframe.http.XHttpRequest.XHttpMethod;
 import com.example.classmate.common.Conf;
 import com.example.classmate.data.News;
 
+@Deprecated
 @XHttpAttr(method = XHttpMethod.GET)
 public class NewsListRequest extends XHttpRequest {
     

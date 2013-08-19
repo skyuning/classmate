@@ -32,10 +32,13 @@ public class News {
         @JSONDict(name = "cdate", defVal = "0000-00-00 00:00:00")
         public String date;
         
-        @JSONDict(name = "cinfo", defVal = "0000-00-00 00:00:00")
+        @JSONDict(name = "cinfo")
         public String info;
         
-        @JSONDict(name = "u_name", defVal = "0000-00-00 00:00:00")
+        @JSONDict(name = "u_name")
         public String username;
+        
+        @JSONDict(name = "u_photo")
+        public String photo;
     }
 }
