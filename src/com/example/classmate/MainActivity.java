@@ -16,8 +16,6 @@ import android.view.MenuItem;
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
 
-//    private TabHost mTabHost;
-
     private static final String[] tags = new String[] { "classmate_list",
             "commemoration_list", "news_list", "more" };
     private static final String[] titles = new String[] { "同学们", "纪念日", "新鲜事",

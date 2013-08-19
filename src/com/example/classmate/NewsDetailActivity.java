@@ -15,6 +15,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.classmate.common.AddReviewRequest;
 import com.example.classmate.common.BaseActivity;
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.common.Conf;
@@ -68,6 +70,7 @@ public class NewsDetailActivity extends BaseActivity {
         mFooterView = getLayoutInflater().inflate(R.layout.review_footer, null);
         mEditText = (EditText) mFooterView.findViewById(R.id.edit);
         mSubmitBtn = (Button) mFooterView.findViewById(R.id.submit);
+        mSubmitBtn.setOnClickListener(new OnSubmitBtnClickListener());
         mListView.addFooterView(mFooterView, null, false);
 
         mData = new ArrayList<JSONObject>();
@@ -75,6 +78,15 @@ public class NewsDetailActivity extends BaseActivity {
         mListView.setAdapter(mAdapter);
 
         loadOnePageData(1);
+    }
+    
+    private class OnSubmitBtnClickListener implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            AddReviewRequest request = new AddReviewRequest(
+                    NewsDetailActivity.this, mNews.newsId, mEditText.getText() .toString());
+            XHttpClient.sendRequest(request, new XHttpCallbacks.DebugHttpCallback(NewsDetailActivity.this));
+        }
     }
 
     private void loadOnePageData(int page) {
