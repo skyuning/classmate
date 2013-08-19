@@ -1,10 +1,12 @@
-package com.example.classmate;
+package com.example.classmate.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+
+import com.example.classmate.ClassmateApp;
 
 import android.content.Context;
 import android.graphics.Bitmap;

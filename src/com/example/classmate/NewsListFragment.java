@@ -3,6 +3,8 @@ package com.example.classmate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+import org.xframe.annotation.JSONUtils;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 import org.xframe.http.XHttpCallbacks;
@@ -13,8 +15,10 @@ import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.common.Conf;
 import com.example.classmate.data.News;
 import com.example.classmate.requests.NewsListRequest;
+import com.example.classmate.utils.ImageLoader;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -33,8 +36,6 @@ public class NewsListFragment extends BaseFragment {
     @ViewInject(id = R.id.listview)
     private ListView mListView;
     
-    private ImageButton mPublishNewsBtn;
-
     private LinearLayout mLayout;
     private List<News> mData;
     private NewsAdapter mAdapter;
@@ -50,17 +51,6 @@ public class NewsListFragment extends BaseFragment {
                 R.layout.fragment_news_list, null);
         ViewAnnotation.bind(mLayout, this);
         
-//        mPublishNewsBtn = getRightImgBtn();
-//        mPublishNewsBtn.setVisibility(View.VISIBLE);
-//        mPublishNewsBtn.setImageResource(android.R.drawable.ic_menu_edit);
-//        mPublishNewsBtn.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), PublishNewsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
         mData = new ArrayList<News>();
         mAdapter = new NewsAdapter(getActivity(), mData);
         mListView.setAdapter(mAdapter);
@@ -85,14 +75,12 @@ public class NewsListFragment extends BaseFragment {
 
     private class _OnItemClickListener implements OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                long id) {
-            // Intent intent = new Intent(getActivity(),
-            // ClassmateInfoActivity.class);
-            // JSONObject item = (JSONObject)
-            // parent.getItemAtPosition(position);
-            // intent.putExtra("classmate_info", item.toString());
-            // startActivity(intent);
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+             Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+             News item = (News) parent.getItemAtPosition(position);
+             String detail = JSONUtils.java2JsonObject(item, new JSONObject()).toString();
+             intent.putExtra("news_detail", detail);
+             startActivity(intent);
         }
     }
 
@@ -120,11 +108,6 @@ public class NewsListFragment extends BaseFragment {
             }
             
             return v;
-        }
-
-        @Override
-        protected Object newViewHolder() {
-            return new ViewHolder();
         }
 
         @Override

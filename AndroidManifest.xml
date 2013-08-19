@@ -60,6 +60,10 @@
             android:name="com.example.classmate.PublishNewsActivity"
             android:label="@string/title_activity_publish_news" >
         </activity>
+        <activity
+            android:name="com.example.classmate.NewsDetailActivity"
+            android:label="@string/title_activity_publish_news" >
+        </activity>
     </application>
 
 </manifest>

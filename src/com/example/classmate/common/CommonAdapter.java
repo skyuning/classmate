@@ -1,5 +1,7 @@
 package com.example.classmate.common;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.xframe.annotation.ViewAnnotation;
@@ -49,6 +51,34 @@ public abstract class CommonAdapter extends BaseAdapter {
         return convertView;
     }
 
-    protected abstract Object newViewHolder();
+    protected Object newViewHolder() {
+        Class<?>[] clazzs = getClass().getDeclaredClasses();
+        Class<?> holderClazz = null;
+        for (Class<?> clazz : clazzs) {
+            if (clazz.getSimpleName() == "ViewHolder") {
+                holderClazz = clazz;
+                break;
+            }
+        }
+        if (null == holderClazz)
+            return null;
+        
+        Object holder = null;
+        try {
+            Constructor<?> constructor = holderClazz.getDeclaredConstructors()[0];
+            constructor.setAccessible(true);
+            holder = constructor.newInstance(this);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return holder;
+    }
+
     protected abstract int getResId();
 }

@@ -5,6 +5,9 @@ import org.xframe.annotation.JSONUtils.JSONDict;
 import com.example.classmate.data.Status.LoadStatus;
 
 public class News {
+    @JSONDict(name = "newsid", defVal = "-1")
+    public int newsId;
+    
     @JSONDict(name = "newsinfo", defVal = "")
     public String info;
 
