@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class NewsListFragment extends BaseFragment {
     
     @ViewInject(id = R.id.listview)
@@ -61,7 +62,8 @@ public class NewsListFragment extends BaseFragment {
     }
 
     private void loadOnePageData(int page) {
-        XHttpClient.sendRequest(new NewsListRequest(page), new XHttpCallbacks.DefaultHttpCallback() {
+        XHttpClient.sendRequest(new NewsListRequest(getActivity(), page),
+                new XHttpCallbacks.DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {
                 @SuppressWarnings("unchecked")
@@ -98,7 +100,7 @@ public class NewsListFragment extends BaseFragment {
             holder.info.setText(item.info + "\n" + item.newsPhoto);
             holder.reviewNum.setText(String.format("%d条评论", item.reviewNum));
             
-            if (TextUtils.isEmpty(item.newsPhoto))
+            if (TextUtils.isEmpty(item.newsPhoto) || "null".equals(item.newsPhoto))
                 holder.photo.setVisibility(View.GONE);
             else {
                 holder.photo.setVisibility(View.VISIBLE);

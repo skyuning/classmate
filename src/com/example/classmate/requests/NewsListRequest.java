@@ -8,17 +8,23 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xframe.annotation.JSONUtils;
 import org.xframe.http.XHttpAttr;
-import org.xframe.http.XHttpRequest;
 import org.xframe.http.XHttpRequest.XHttpMethod;
+
+import android.content.Context;
 
 import com.example.classmate.common.Conf;
 import com.example.classmate.data.News;
 
 @Deprecated
 @XHttpAttr(method = XHttpMethod.GET)
-public class NewsListRequest extends XHttpRequest {
+public class NewsListRequest extends BaseRequest {
     
-    public NewsListRequest(int page) {
+    @Deprecated
+    public NewsListRequest(Context context, int page) {
+        super(context);
+        String token = context.getSharedPreferences(
+                "session", Context.MODE_PRIVATE).getString("token", "");
+        addParam("token", token);
         addParam("action", "list");
         addParam("page", page);
     }

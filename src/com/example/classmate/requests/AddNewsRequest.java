@@ -20,7 +20,8 @@ public class AddNewsRequest extends BaseRequest {
             throws UnsupportedEncodingException {
         super(context);
         mInfo = info;
-        addMultipartFile("photo", photoPath, "image/jpeg");
+        if (null != photoPath)
+            addMultipartFile("photo", photoPath, "image/jpeg");
     }
 
     @Override

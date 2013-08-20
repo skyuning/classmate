@@ -20,6 +20,9 @@ public class ListRequest extends BaseRequest {
     
     public ListRequest(Context context, String script, int page) {
         super(context);
+        String token = context.getSharedPreferences(
+                "session", Context.MODE_PRIVATE).getString("token", "");
+        addParam("token", token);
         addParam("action", "list");
         addParam("page", page);
         mScript = script;
