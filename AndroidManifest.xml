@@ -17,7 +17,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name="com.example.classmate.WelcomeActivity"
+            android:name=".WelcomeActivity"
             android:label="@string/title_activity_welcome" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.classmate.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
@@ -43,26 +43,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.classmate.MainActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTask"
             android:label="@string/app_name"
              >
         </activity>
         <activity
-            android:name="com.example.classmate.ClassmateActivity"
+            android:name=".ClassmateActivity"
             android:label="@string/title_activity_classmate" >
         </activity>
         <activity
-            android:name="com.example.classmate.UserProfileActivity"
+            android:name=".UserProfileActivity"
             android:label="@string/title_activity_user_profile" >
         </activity>
         <activity
-            android:name="com.example.classmate.PublishNewsActivity"
+            android:name=".PublishNewsActivity"
             android:label="@string/title_activity_publish_news" >
         </activity>
         <activity
-            android:name="com.example.classmate.NewsDetailActivity"
+            android:name=".NewsDetailActivity"
             android:label="@string/title_activity_publish_news" >
+        </activity>
+        <activity
+            android:name=".ClassmateDetailActivity"
+            android:label="同学信息" >
         </activity>
     </application>
 

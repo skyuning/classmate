@@ -3,6 +3,8 @@ package com.example.classmate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+import org.xframe.annotation.JSONUtils;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 import org.xframe.http.XHttpCallbacks;
@@ -15,6 +17,7 @@ import com.example.classmate.data.Classmate;
 import com.example.classmate.requests.ClassmateListRequest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class ClassmateListFragment extends BaseFragment {
 
     @ViewInject(id = R.id.listview)
@@ -75,10 +79,11 @@ public class ClassmateListFragment extends BaseFragment {
     private class _OnItemClickListener implements OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            Intent intent = new Intent(getActivity(), ClassmateInfoActivity.class);
-//            JSONObject item = (JSONObject) parent.getItemAtPosition(position);
-//            intent.putExtra("classmate_info", item.toString());
-//            startActivity(intent);
+            Intent intent = new Intent(getActivity(), ClassmateDetailActivity.class);
+            Classmate classmate = (Classmate) parent.getItemAtPosition(position);
+            JSONObject item = JSONUtils.java2JsonObject(classmate, new JSONObject());
+            intent.putExtra("classmate_detail", item.toString());
+            startActivity(intent);
         }
     }
 
