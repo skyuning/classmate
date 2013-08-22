@@ -17,11 +17,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.example.classmate.common.AddReviewRequest;
 import com.example.classmate.common.BaseActivity;
@@ -44,6 +46,9 @@ public class NewsDetailActivity extends BaseActivity {
     private View mFooterView;
     private EditText mEditText;
     private Button mSubmitBtn;
+    
+    private int mPage;
+    private boolean mIsLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +77,15 @@ public class NewsDetailActivity extends BaseActivity {
         mSubmitBtn = (Button) mFooterView.findViewById(R.id.submit);
         mSubmitBtn.setOnClickListener(new OnSubmitBtnClickListener());
         mListView.addFooterView(mFooterView, null, false);
+        mEditText.clearFocus();
 
         mData = new ArrayList<JSONObject>();
         mAdapter = new ReviewAdapter(this, mData);
         mListView.setAdapter(mAdapter);
+        mListView.setOnScrollListener(new _OnScrollListener());
 
-        loadOnePageData(1);
+        mPage = 0;
+        mIsLoading = false;
     }
     
     private class OnSubmitBtnClickListener implements OnClickListener {
@@ -102,6 +110,22 @@ public class NewsDetailActivity extends BaseActivity {
                 mListView.setSelection(mAdapter.getCount() - 1);
             };
         });
+    }
+    
+    private class _OnScrollListener implements OnScrollListener {
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem,
+                int visibleItemCount, int totalItemCount) {
+            if ((view.getLastVisiblePosition() == view.getCount() - 1) && ! mIsLoading) {
+                mPage++;
+                mIsLoading = true;
+                loadOnePageData(mPage);
+            }
+        }
     }
 
     private class ReviewAdapter extends CommonAdapter {

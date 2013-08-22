@@ -3,16 +3,20 @@ package com.example.classmate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+import org.xframe.annotation.JSONUtils;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpClient;
+
 import com.example.classmate.common.BaseFragment;
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.data.Holiday;
 import com.example.classmate.requests.HolidayListRequest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class HolidayListFragment extends BaseFragment {
 
     @ViewInject(id = R.id.listview)
@@ -69,12 +74,11 @@ public class HolidayListFragment extends BaseFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
-            // Intent intent = new Intent(getActivity(),
-            // ClassmateInfoActivity.class);
-            // JSONObject item = (JSONObject)
-            // parent.getItemAtPosition(position);
-            // intent.putExtra("classmate_info", item.toString());
-            // startActivity(intent);
+             Intent intent = new Intent(getActivity(), HolidayDetailActivity.class);
+             Holiday holiday = (Holiday) parent.getItemAtPosition(position);
+             JSONObject jo = JSONUtils.java2JsonObject(holiday, new JSONObject());
+             intent.putExtra("holiday_detail", jo.toString());
+             startActivity(intent);
         }
     }
 
