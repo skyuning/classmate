@@ -35,8 +35,8 @@
             android:id="@+id/review_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_gravity="right"
+            android:layout_marginTop="5dp"
             android:text="1314条评论" />
 
     </LinearLayout>

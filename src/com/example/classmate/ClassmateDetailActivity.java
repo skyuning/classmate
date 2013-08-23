@@ -1,7 +1,5 @@
 package com.example.classmate;
 
-import java.util.Iterator;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
@@ -13,8 +11,26 @@ import com.example.classmate.common.BaseActivity;
 
 public class ClassmateDetailActivity extends BaseActivity {
 
-    @ViewInject(id = R.id.text)
-    private TextView mTextView;
+    @ViewInject(id = R.id.name)
+    private TextView mNameView;
+    
+    @ViewInject(id = R.id.birth)
+    private TextView mBirthView;
+    
+    @ViewInject(id = R.id.address)
+    private TextView mAddressView;
+    
+    @ViewInject(id = R.id.phone)
+    private TextView mPhoneView;
+    
+    @ViewInject(id = R.id.qq)
+    private TextView mQQView;
+    
+    @ViewInject(id = R.id.email)
+    private TextView mEmailView;
+    
+    @ViewInject(id = R.id.work)
+    private TextView mWorkView;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,18 +39,20 @@ public class ClassmateDetailActivity extends BaseActivity {
         ViewAnnotation.bind(getWindow().getDecorView(), this);
         
         String classmateDetail = getIntent().getStringExtra("classmate_detail");
-        String text = "";
+        JSONObject jo = null;
         try {
-            JSONObject jo = new JSONObject(classmateDetail);
-            Iterator<?> keyIter = jo.keys();
-            while (keyIter.hasNext()) {
-                String key = (String) keyIter.next();
-                text += key + ": " + jo.get(key) + "\n";
-            }
-            mTextView.setText(text);
+            jo = new JSONObject(classmateDetail);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        
+        mNameView.setText(jo.optString("u_name"));
+        mBirthView.setText(jo.optString("u_birthday"));
+        mAddressView.setText(jo.optString("u_address"));
+        mPhoneView.setText(jo.optString("u_cellphone"));
+        mQQView.setText(jo.optString("u_qq"));
+        mEmailView.setText(jo.optString("u_email"));
+        mWorkView.setText(jo.optString("u_work"));
     }
     
 }

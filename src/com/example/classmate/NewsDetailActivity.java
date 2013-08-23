@@ -162,7 +162,7 @@ public class NewsDetailActivity extends BaseActivity {
             @ViewInject(id = R.id.photo)
             ImageView photo;
             
-            @ViewInject(id = R.id.date)
+            @ViewInject(id = R.id.birth)
             TextView date;
             
             @ViewInject(id = R.id.info)

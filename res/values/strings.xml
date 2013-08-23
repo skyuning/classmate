@@ -9,5 +9,8 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="title_activity_publish_news">PublishNewsActivity</string>
+    
+    <color name="classmate_detail_info">#222</color>
+    <color name="classmate_detail_tag">#666</color>
 
 </resources>
