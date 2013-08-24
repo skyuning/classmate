@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
 public class Utils {
 
@@ -24,5 +25,13 @@ public class Utils {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    public static boolean isEmptyString(CharSequence s) {
+        if (s.equals("null"))
+            return true;
+        if (TextUtils.isEmpty(s))
+            return true;
+        return false;
     }
 }

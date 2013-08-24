@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/bg_edit_area_tag"
+                android:background="@drawable/bg_table"
                 android:orientation="vertical" >
 
                 <TextView
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/bg_edit_area_tag"
+            android:background="@drawable/bg_table"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -137,7 +137,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/bg_edit_area_tag"
+            android:background="@drawable/bg_table"
             android:orientation="vertical" >
 
             <LinearLayout

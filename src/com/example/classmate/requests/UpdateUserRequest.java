@@ -1,20 +1,18 @@
 package com.example.classmate.requests;
 
-import java.io.UnsupportedEncodingException;
-
 import org.apache.http.HttpResponse;
 import org.xframe.http.XHttpAttr;
-import org.xframe.http.XHttpRequest;
 import org.xframe.http.XHttpRequest.XHttpMethod;
+
+import android.content.Context;
 
 import com.example.classmate.common.Conf;
 
 @XHttpAttr(method = XHttpMethod.POST)
-public class UpdateUserRequest extends XHttpRequest {
+public class UpdateUserRequest extends BaseRequest {
 
-    public UpdateUserRequest(String photoPath)
-            throws UnsupportedEncodingException {
-        addMultipartFile("photo", photoPath, "image/jpeg");
+    public UpdateUserRequest(Context context, String openid) {
+        super(context);
     }
 
     @Override
@@ -26,6 +24,9 @@ public class UpdateUserRequest extends XHttpRequest {
 
     @Override
     protected String buildUrl() {
-        return Conf.HOST + Conf.PATH + "user.jsp?action=update&token=123457890&openid=" + Conf.APPID;
+        String token = mContext.getSharedPreferences(
+                "session", Context.MODE_PRIVATE).getString("token", "");
+        return Conf.HOST + Conf.PATH + "user.jsp?action=update"
+                + String.format("&token=%s&openid=%s", token, Conf.APPID);
     }
 }

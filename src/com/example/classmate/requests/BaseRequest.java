@@ -1,6 +1,12 @@
 package com.example.classmate.requests;
 
+import java.io.IOException;
+
 import org.apache.http.HttpResponse;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.xframe.http.XHttpRequest;
 
@@ -11,13 +17,25 @@ import android.content.Intent;
 
 public abstract class BaseRequest extends XHttpRequest {
     
-    private Context mContext;
+    protected Context mContext;
     
     public BaseRequest(Context context) {
         mContext = context;
         String token = context.getSharedPreferences(
                 "session", Context.MODE_PRIVATE).getString("token", "");
         addParam("token", token);
+    }
+    
+    @Override
+    public HttpUriRequest buildRequest() throws IOException {
+        if (getAttr().method() != XHttpMethod.POST)
+            return super.buildRequest();
+        
+        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(mParams, "utf-8");
+        HttpPost post = new HttpPost(buildUrl() + "?" + EntityUtils.toString(entity));
+        if (null != mMultipartEntity)
+            post.setEntity(mMultipartEntity);
+        return post;
     }
 
     @Override

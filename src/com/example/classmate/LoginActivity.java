@@ -35,6 +35,8 @@ public class LoginActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         XHttpRequest request = new LoginRequest(Test.openid, Test.token);
+        request.addParam("name", "ttt");
+        System.err.println("token: " + Test.token);
         XHttpClient.sendRequest(request, new XHttpCallbacks.DebugHttpCallback(this) {
             @Override
             public void onSuccess(AHttpResult result) {
