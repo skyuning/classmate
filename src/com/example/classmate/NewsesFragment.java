@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class NewsListFragment extends BaseFragment {
+public class NewsesFragment extends BaseFragment {
     
     @ViewInject(id = R.id.listview)
     private ListView mListView;

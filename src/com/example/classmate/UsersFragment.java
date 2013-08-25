@@ -32,7 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ClassmateListFragment extends BaseFragment {
+public class UsersFragment extends BaseFragment {
 
     @ViewInject(id = R.id.listview)
     private ListView mListView;
@@ -138,7 +138,7 @@ public class ClassmateListFragment extends BaseFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             Intent intent = new Intent(getActivity(),
-                    ClassmateDetailActivity.class);
+                    UserDetailActivity.class);
             // Classmate classmate = (Classmate)
             // parent.getItemAtPosition(position);
             // JSONObject jo = JSONUtils.java2JsonObject(classmate, new

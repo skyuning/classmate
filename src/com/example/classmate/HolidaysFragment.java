@@ -28,7 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
-public class HolidayListFragment extends BaseFragment {
+public class HolidaysFragment extends BaseFragment {
 
     @ViewInject(id = R.id.listview)
     private ListView mListView;

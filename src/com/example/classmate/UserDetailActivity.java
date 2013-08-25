@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import com.example.classmate.common.BaseActivity;
 
-public class ClassmateDetailActivity extends BaseActivity {
+public class UserDetailActivity extends BaseActivity {
 
     @ViewInject(id = R.id.name)
     private TextView mNameView;

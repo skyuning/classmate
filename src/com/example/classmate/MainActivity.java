@@ -21,8 +21,8 @@ public class MainActivity extends Activity {
     private static final String[] titles = new String[] { "同学们", "纪念日", "新鲜事",
             "设置" };
     private static final Class<?>[] fragmentClasses = new Class<?>[] {
-            ClassmateListFragment.class, HolidayListFragment.class,
-            NewsListFragment.class, MoreFragment.class };
+            UsersFragment.class, HolidaysFragment.class,
+            NewsesFragment.class, MoreFragment.class };
 
     private ActionBar mActionBar;
 
@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
         for (int i = 0; i < tags.length; i++) {
             TabListener<Fragment> listener = new TabListener<Fragment>(this,
                     tags[i], fragmentClasses[i]);
-            Tab tab = mActionBar.newTab().setText(titles[i]).setIcon(resId)
+            Tab tab = mActionBar.newTab().setText(titles[i])
                     .setTabListener(listener);
             mActionBar.addTab(tab);
         }
