@@ -6,7 +6,7 @@ import java.io.UnsupportedEncodingException;
 import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
-import org.xframe.http.XHttpCallbacks.DefaultHttpCallback;
+import org.xframe.http.XHttpCallbacks.DebugHttpCallback;
 import org.xframe.http.XHttpClient;
 import org.xframe.utils.ImageUtils;
 
@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import com.example.classmate.common.BaseActivity;
 import com.example.classmate.common.Conf;
 import com.example.classmate.common.Test;
 import com.example.classmate.common.Utils;
@@ -28,7 +29,7 @@ import com.example.classmate.requests.UpdateUserRequest;
 import com.example.classmate.requests.UserInfoRequest;
 import com.example.classmate.utils.ImageLoader;
 
-public class UserProfileActivity extends Activity {
+public class UserProfileActivity extends BaseActivity {
 
     private static final int REQUEST_CHOOSE_PHOTO = 11;
 
@@ -98,14 +99,18 @@ public class UserProfileActivity extends Activity {
                 e.printStackTrace();
             }
         }
-        XHttpClient.sendRequest(request, new DefaultHttpCallback());
+        XHttpClient.sendRequest(request, new DebugHttpCallback(this) {
+            @Override
+            public void onSuccess(AHttpResult result) {
+                showToast("提交成功");
+            }
+        });
     }
     
     private void asyncLoadProfile() {
-        XHttpClient.sendRequest(new UserInfoRequest(this), new DefaultHttpCallback() {
+        XHttpClient.sendRequest(new UserInfoRequest(this), new DebugHttpCallback(this) {
             @Override
             public void onSuccess(AHttpResult result) {
-                super.onSuccess(result);
                 JSONObject jo = (JSONObject) result.data;
                 mNameView.setText(jo.optString("u_name"));
                 mBirthView.setText(jo.optString("u_birthday"));

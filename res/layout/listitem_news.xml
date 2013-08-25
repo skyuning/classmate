@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="#f0f0f0"
+    android:background="@drawable/bg_listitem_news"
     android:padding="16dp" >
 
     <ImageView

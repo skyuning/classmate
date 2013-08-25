@@ -13,9 +13,15 @@
     <color name="classmate_detail_info">#222</color>
     <color name="classmate_detail_tag">#666</color>
     <color name="divider">#aaa</color>
+    <color name="border">#aaa</color>
     
     <style name="ClassmateTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:windowBackground">@drawable/bg_window</item>
     </style>
+    
+    <dimen name="corner_radius">5dp</dimen>
+    <dimen name="border_radius">5.5dp</dimen>
+    <dimen name="divider_width">0.5dp</dimen>
+    <dimen name="border_width">0.5dp</dimen>
 
 </resources>

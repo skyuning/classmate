@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.xframe.annotation.ViewAnnotation;
 
+import com.example.classmate.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,25 +42,26 @@ public abstract class CommonAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return getMainView(position, convertView, parent);
+        if (convertView == null)
+            convertView = createMainView(position, parent);
+        return convertView;
     }
     
-    protected View getMainView(int position, View convertView, ViewGroup parent) {
+    protected View createMainView(int position, ViewGroup parent) {
         ListView lv = (ListView) parent;
         lv.setDividerHeight(0);
         
+        View mainView = null;
+        
         Object holder = null;
-        if (null == convertView) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = (ViewGroup) inflater.inflate(getResId(), null);
-            holder = newViewHolder();
-            ViewAnnotation.bind(convertView, holder);
-            convertView.setTag(holder);
-        } else {
-            holder = convertView.getTag();
-        }
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        mainView =  inflater.inflate(getResId(), null);
+        holder = newViewHolder();
+        ViewAnnotation.bind(mainView, holder);
+        mainView.setTag(holder);
+        mainView.setId(R.id.main);
 
-        return convertView;
+        return mainView;
     }
 
     protected Object newViewHolder() {
@@ -90,5 +93,5 @@ public abstract class CommonAdapter extends BaseAdapter {
         return holder;
     }
 
-    protected abstract int getResId();
+    protected int getResId() { return 0; }
 }

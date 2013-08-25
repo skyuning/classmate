@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
             "设置" };
     private static final Class<?>[] fragmentClasses = new Class<?>[] {
             NewsesFragment.class, HolidaysFragment.class, UsersFragment.class,
-            MoreFragment.class };
+            SettingFragment.class };
 
     private ActionBar mActionBar;
 
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         switch (mActionBar.getSelectedNavigationIndex()) {
-        case 2:
+        case 0:
             inflater.inflate(R.menu.news, menu);
             break;
 

@@ -7,6 +7,7 @@ import org.xframe.http.XHttpRequest.XHttpMethod;
 import android.content.Context;
 
 import com.example.classmate.common.Conf;
+import com.example.classmate.common.Test;
 
 @XHttpAttr(method = XHttpMethod.POST)
 public class UpdateUserRequest extends BaseRequest {
@@ -27,6 +28,6 @@ public class UpdateUserRequest extends BaseRequest {
         String token = mContext.getSharedPreferences(
                 "session", Context.MODE_PRIVATE).getString("token", "");
         return Conf.HOST + Conf.PATH + "user.jsp?action=update"
-                + String.format("&token=%s&openid=%s", token, Conf.APPID);
+                + String.format("&token=%s&openid=%s", token, Test.openid);
     }
 }

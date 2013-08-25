@@ -94,10 +94,13 @@ public class UsersFragment extends BaseFragment {
                     public void onSuccess(AHttpResult result) {
                         @SuppressWarnings("unchecked")
                         List<JSONObject> data = (List<JSONObject>) result.data;
-                        if (data.isEmpty())
+                        if (data.isEmpty()) {
                             mLoadingFooter.setVisibility(View.INVISIBLE);
-                        mData.addAll(data);
-                        mAdapter.notifyDataSetChanged();
+                            mListView.setOnScrollListener(null);
+                        } else {
+                            mData.addAll(data);
+                            mAdapter.notifyDataSetChanged();
+                        }
                         mIsLoading = false;
                     };
 
@@ -118,8 +121,6 @@ public class UsersFragment extends BaseFragment {
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem,
                 int visibleItemCount, int totalItemCount) {
-            if (mListView.getFooterViewsCount() == 0)
-                return;
             if (view.getLastVisiblePosition() < view.getCount() - 1)
                 return;
             if (mIsLoading)
@@ -158,7 +159,7 @@ public class UsersFragment extends BaseFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View mainView = null;
             if (convertView == null) {
-                mainView = getMainView(position, convertView, parent);
+                mainView = createMainView(position, parent);
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_wraper, null);
                 ViewGroup wraper = (ViewGroup) convertView.findViewById(R.id.wraper);
                 wraper.addView(mainView);

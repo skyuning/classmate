@@ -6,8 +6,6 @@ import android.widget.Toast;
 
 public class BaseActivity extends Activity {
     
-    private static Toast sToast;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -16,9 +14,6 @@ public class BaseActivity extends Activity {
     }
 
     public void showToast(String text) {
-        if (null == sToast)
-            sToast = new Toast(this);
-        sToast.setText(text);
-        sToast.show();
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }
