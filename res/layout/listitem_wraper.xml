@@ -5,20 +5,27 @@
     android:layout_height="wrap_content"
     android:paddingLeft="10dp"
     android:paddingRight="10dp" >
-    
-    <View 
+
+    <View
         android:layout_width="0.5dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
         android:background="@color/divider" />
 
-    <View 
+    <View
         android:layout_width="0.5dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:background="@color/divider" />
 
-    <View 
+    <View
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_gravity="bottom"
+        android:background="@color/divider" />
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_gravity="top"
@@ -28,11 +35,8 @@
         android:id="@+id/wraper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0.5dp"
-        android:layout_marginLeft="0.5dp"
-        android:layout_marginRight="0.5dp"
+        android:layout_margin="0.5dp"
         android:orientation="vertical" >
-        
     </LinearLayout>
 
 </FrameLayout>

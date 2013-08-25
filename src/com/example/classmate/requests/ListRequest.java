@@ -1,9 +1,11 @@
 package com.example.classmate.requests;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xframe.http.XHttpAttr;
@@ -17,6 +19,7 @@ import android.content.Context;
 public class ListRequest extends BaseRequest {
 
     private String mScript;
+    private int mPage;
     
     public ListRequest(Context context, String script, int page) {
         super(context);
@@ -24,8 +27,18 @@ public class ListRequest extends BaseRequest {
                 "session", Context.MODE_PRIVATE).getString("token", "");
         addParam("token", token);
         addParam("action", "list");
-        addParam("page", page);
         mScript = script;
+    }
+    
+    public void setPage(int page) {
+        mPage = page;
+    }
+    
+    @Override
+    protected String buildQueryString() throws ParseException, IOException {
+        String queryString = super.buildQueryString();
+        queryString += "&page=" + mPage;
+        return queryString;
     }
 
     @Override

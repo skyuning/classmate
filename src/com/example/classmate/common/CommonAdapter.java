@@ -24,6 +24,10 @@ public abstract class CommonAdapter extends BaseAdapter {
         mContext = context;
         mData = data;
     }
+    
+    public List<?> getData() {
+        return mData;
+    }
 
     @Override
     public int getCount() {

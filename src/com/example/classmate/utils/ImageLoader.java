@@ -11,7 +11,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.widget.RelativeLayout.LayoutParams;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
 public class ImageLoader {
