@@ -7,11 +7,11 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import com.example.classmate.ClassmateApp;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ImageView;
 
 public class ImageLoader {
@@ -61,6 +61,9 @@ public class ImageLoader {
                 if (null == result) {
                     result = BitmapFactory.decodeResource(context.getResources(), faildImageResId);
                     iv.setImageBitmap(result);
+                    LayoutParams params = (LayoutParams) iv.getLayoutParams();
+                    params.height = LayoutParams.WRAP_CONTENT;
+                    iv.setLayoutParams(params);
                 } else {
                     iv.setImageBitmap(result);
                 }

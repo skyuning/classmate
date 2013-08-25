@@ -2,7 +2,6 @@ package com.example.classmate;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
@@ -157,15 +156,27 @@ public class UsersFragment extends BaseFragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = super.getView(position, convertView, parent);
-            ViewHolder holder = (ViewHolder) v.getTag();
+            View mainView = null;
+            if (convertView == null) {
+                mainView = getMainView(position, convertView, parent);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_wraper, null);
+                ViewGroup wraper = (ViewGroup) convertView.findViewById(R.id.wraper);
+                wraper.addView(mainView);
+            } else {
+                mainView = convertView.findViewById(R.id.main);
+            }
+            if (position % 2 == 0)
+                mainView.setBackgroundResource(R.drawable.bg_listitem_1);
+            else
+                mainView.setBackgroundResource(R.drawable.bg_listitem_2);
 
+            ViewHolder holder = (ViewHolder) mainView.getTag();
             JSONObject item = (JSONObject) getItem(position);
             String name = item.optString("u_name");
             String phone = item.optString("u_cellphone");
             holder.name.setText(name);
             holder.phone.setText(phone);
-            return v;
+            return convertView;
         }
 
         @Override

@@ -37,6 +37,7 @@ public class NewsesFragment extends BaseFragment {
     private LinearLayout mLayout;
     private List<JSONObject> mData;
     private NewsAdapter mAdapter;
+    private View mHeaderView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +49,10 @@ public class NewsesFragment extends BaseFragment {
         mLayout = (LinearLayout) inflater.inflate(
                 R.layout.fragment_news_list, null);
         ViewAnnotation.bind(mLayout, this);
+        
+        // header
+        mHeaderView = inflater.inflate(R.layout.classmate_list_header, null);
+        mListView.addHeaderView(mHeaderView);
         
         mData = new ArrayList<JSONObject>();
         mAdapter = new NewsAdapter(getActivity(), mData);
@@ -67,7 +72,7 @@ public class NewsesFragment extends BaseFragment {
                 List<JSONObject> data = (List<JSONObject>) result.data;
                 mData.addAll(data);
                 mAdapter.notifyDataSetChanged();
-                mListView.setSelection(mAdapter.getCount() - 1);
+//                mListView.setSelection(mAdapter.getCount() - 1);
             };
         });
     }

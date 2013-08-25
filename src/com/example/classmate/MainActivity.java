@@ -12,17 +12,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
 
-    private static final String[] tags = new String[] { "classmate_list",
-            "commemoration_list", "news_list", "more" };
-    private static final String[] titles = new String[] { "同学们", "纪念日", "新鲜事",
+    private static final String[] tags = new String[] { "newses", "holidays",
+            "users", "more" };
+    private static final String[] titles = new String[] { "新鲜事", "纪念日", "通迅录",
             "设置" };
     private static final Class<?>[] fragmentClasses = new Class<?>[] {
-            UsersFragment.class, HolidaysFragment.class,
-            NewsesFragment.class, MoreFragment.class };
+            NewsesFragment.class, HolidaysFragment.class, UsersFragment.class,
+            MoreFragment.class };
 
     private ActionBar mActionBar;
 
@@ -35,11 +37,16 @@ public class MainActivity extends Activity {
 
         mActionBar = getActionBar();
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
+        
         for (int i = 0; i < tags.length; i++) {
             TabListener<Fragment> listener = new TabListener<Fragment>(this,
                     tags[i], fragmentClasses[i]);
-            Tab tab = mActionBar.newTab().setText(titles[i])
+            View tabView = getLayoutInflater().inflate(R.layout.tab, null);
+            tabView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            Tab tab = mActionBar.newTab()
+//                    .setCustomView(tabView)
+                    .setText(titles[i])
+//                    .setIcon(R.drawable.tab_news_on)
                     .setTabListener(listener);
             mActionBar.addTab(tab);
         }

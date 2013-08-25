@@ -12,8 +12,6 @@
         android:gravity="top"
         android:inputType="textMultiLine"
         android:padding="10dp" >
-
-        <requestFocus />
     </EditText>
 
     <Button

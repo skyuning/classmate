@@ -36,6 +36,7 @@ public class HolidaysFragment extends BaseFragment {
     private LinearLayout mLayout;
     private List<Holiday> mData;
     private CommemorationAdapter mAdapter;
+    private View mHeaderView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +48,10 @@ public class HolidaysFragment extends BaseFragment {
         mLayout = (LinearLayout) inflater.inflate(
                 R.layout.fragment_holiday_list, null);
         ViewAnnotation.bind(mLayout, this);
+
+        // header
+        mHeaderView = inflater.inflate(R.layout.classmate_list_header, null);
+        mListView.addHeaderView(mHeaderView);
 
         mData = new ArrayList<Holiday>();
         mListView.addFooterView(inflater.inflate(R.layout.listitem_wraper, null));

@@ -22,7 +22,6 @@
             android:minLines="2"
             android:paddingTop="5dp" >
 
-            <requestFocus />
         </EditText>
 
         <ImageView
