@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="app_name">Classmate</string>
     <string name="action_settings">Settings</string>
@@ -12,5 +12,10 @@
     
     <color name="classmate_detail_info">#222</color>
     <color name="classmate_detail_tag">#666</color>
+    <color name="divider">#aaa</color>
+    
+    <style name="ClassmateTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:windowBackground">@drawable/bg_window</item>
+    </style>
 
 </resources>

@@ -37,8 +37,10 @@ public class MainActivity extends Activity {
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         for (int i = 0; i < tags.length; i++) {
-            Tab tab = mActionBar.newTab().setText(titles[i]).setTabListener(
-                            new TabListener<Fragment>(this, tags[i], fragmentClasses[i]));
+            TabListener<Fragment> listener = new TabListener<Fragment>(this,
+                    tags[i], fragmentClasses[i]);
+            Tab tab = mActionBar.newTab().setText(titles[i]).setIcon(resId)
+                    .setTabListener(listener);
             mActionBar.addTab(tab);
         }
     }

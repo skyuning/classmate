@@ -49,6 +49,7 @@ public class HolidayListFragment extends BaseFragment {
         ViewAnnotation.bind(mLayout, this);
 
         mData = new ArrayList<Holiday>();
+        mListView.addFooterView(inflater.inflate(R.layout.listitem_wraper, null));
         mAdapter = new CommemorationAdapter(getActivity(), mData);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new _OnItemClickListener());

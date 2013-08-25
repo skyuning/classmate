@@ -6,11 +6,14 @@ import java.util.List;
 
 import org.xframe.annotation.ViewAnnotation;
 
+import com.example.classmate.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 public abstract class CommonAdapter extends BaseAdapter {
     
@@ -39,15 +42,32 @@ public abstract class CommonAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ListView lv = (ListView) parent;
+        lv.setDividerHeight(0);
+        
         Object holder = null;
+        View itemView = null;
         if (null == convertView) {
-            convertView = LayoutInflater.from(mContext).inflate(getResId(), null);
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            convertView = (ViewGroup) inflater.inflate(R.layout.listitem_wraper, null);
+            ViewGroup wraper = (ViewGroup) convertView.findViewById(R.id.wraper);
+            itemView = inflater.inflate(getResId(), null);
+            itemView.setId(R.id.listitem);
+            wraper.addView(itemView);
+            
             holder = newViewHolder();
             ViewAnnotation.bind(convertView, holder);
             convertView.setTag(holder);
         } else {
             holder = convertView.getTag();
+            itemView = convertView.findViewById(R.id.listitem);
         }
+        
+        if (position % 2 == 0)
+            itemView.setBackgroundResource(R.drawable.bg_listitem_1);
+        else
+            itemView.setBackgroundResource(R.drawable.bg_listitem_2);
+
         return convertView;
     }
 
