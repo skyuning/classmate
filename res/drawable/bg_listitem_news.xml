@@ -9,20 +9,8 @@
             <corners android:radius="3dp" />
         </shape></item>
     <item><layer-list>
-
-            <!-- shadow -->
-            <!--
-            <item android:left="8dp" android:top="8dp"><shape>
-                    <solid android:color="#44000000" />
-                </shape></item>
-            <item android:bottom="0dp" android:left="3dp" android:right="0dp" android:top="5dp"><shape>
-                    <solid android:color="#50404040" />
-
-                    <corners android:radius="4dp" />
-                </shape></item>
-            -->
             <item><shape>
-                    <solid android:color="#ccffeeaa" />
+                    <solid android:color="#fffff0" />
 
                     <stroke android:width="0.5dp" android:color="#000000" />
 

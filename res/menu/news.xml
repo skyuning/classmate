@@ -4,7 +4,7 @@
         android:id="@+id/publish_news"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/write"
         android:title="发布"/>
 
 </menu>

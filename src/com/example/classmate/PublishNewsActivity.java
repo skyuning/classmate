@@ -22,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -39,16 +38,13 @@ public class PublishNewsActivity extends Activity implements OnClickListener {
     @ViewInject(id = R.id.news_info)
     private EditText mNewsInfo;
 
-    @ViewInject(id = R.id.publish)
-    private Button mPublishBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_news);
         ViewAnnotation.bind(getWindow().getDecorView(), this);
 
-        mPublishBtn.setOnClickListener(this);
+        mNewsPhoto.setOnClickListener(this);
     }
 
     @Override
@@ -59,18 +55,7 @@ public class PublishNewsActivity extends Activity implements OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_photo) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.publish:
+        if (item.getItemId() == R.id.action_submit) {
             try {
                 XHttpClient.sendRequest(
                         new AddNewsRequest(this, mImgPath, mNewsInfo.getText().toString()),
@@ -87,6 +72,17 @@ public class PublishNewsActivity extends Activity implements OnClickListener {
                 Toast.makeText(this, "上传失败", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.news_photo:
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
             break;
 
         default:
