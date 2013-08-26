@@ -12,7 +12,7 @@ import org.xframe.http.XHttpClient;
 
 import com.example.classmate.common.BaseFragment;
 import com.example.classmate.common.CommonAdapter;
-import com.example.classmate.requests.BaseRequest;
+import com.example.classmate.requests.ListRequest;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -82,7 +82,8 @@ public abstract class BaseListFragment extends BaseFragment implements
     }
 
     private void loadOnePageData(int page) {
-        BaseRequest request = getRequest(page);
+        ListRequest request = getRequest();
+        request.setPage(page);
         XHttpCallback callback = new XHttpCallbacks.DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {
@@ -128,5 +129,5 @@ public abstract class BaseListFragment extends BaseFragment implements
 
     protected abstract CommonAdapter getAdapter();
 
-    protected abstract BaseRequest getRequest(int page);
+    protected abstract ListRequest getRequest();
 }

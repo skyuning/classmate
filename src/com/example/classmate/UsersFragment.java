@@ -7,8 +7,6 @@ import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpClient;
-import org.xframe.http.XHttpRequest;
-
 import com.example.classmate.common.BaseFragment;
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.requests.ListRequest;
@@ -43,8 +41,6 @@ public class UsersFragment extends BaseFragment {
     private boolean mIsLoading;
     private View mLoadingFooter;
     private View mHeaderView;
-    private TextView mTimeView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -63,7 +59,6 @@ public class UsersFragment extends BaseFragment {
 
         // header
         mHeaderView = inflater.inflate(R.layout.classmate_list_header, null);
-        mTimeView = (TextView) mHeaderView.findViewById(R.id.time);
         mListView.addHeaderView(mHeaderView);
 
         // footer
@@ -86,31 +81,30 @@ public class UsersFragment extends BaseFragment {
     }
 
     private void loadOnePageData(int page) {
-        XHttpRequest listClassmate = new ListRequest(getActivity(), "user",
-                page);
-        XHttpClient.sendRequest(listClassmate,
-                new XHttpCallbacks.DefaultHttpCallback() {
-                    @Override
-                    public void onSuccess(AHttpResult result) {
-                        @SuppressWarnings("unchecked")
-                        List<JSONObject> data = (List<JSONObject>) result.data;
-                        if (data.isEmpty()) {
-                            mLoadingFooter.setVisibility(View.INVISIBLE);
-                            mListView.setOnScrollListener(null);
-                        } else {
-                            mData.addAll(data);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                        mIsLoading = false;
-                    };
+        ListRequest request = new ListRequest(getActivity(), "user", 0);
+        request.setPage(page);
+        XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback() {
+            @Override
+            public void onSuccess(AHttpResult result) {
+                @SuppressWarnings("unchecked")
+                List<JSONObject> data = (List<JSONObject>) result.data;
+                if (data.isEmpty()) {
+                    mLoadingFooter.setVisibility(View.INVISIBLE);
+                    mListView.setOnScrollListener(null);
+                } else {
+                    mData.addAll(data);
+                    mAdapter.notifyDataSetChanged();
+                }
+                mIsLoading = false;
+            };
 
-                    @Override
-                    public void onFaild(AHttpResult result) {
-                        mIsLoading = false;
-                        // Toast.makeText(getActivity(), result.e.getMessage(),
-                        // Toast.LENGTH_LONG).show();
-                    }
-                });
+            @Override
+            public void onFaild(AHttpResult result) {
+                mIsLoading = false;
+                // Toast.makeText(getActivity(), result.e.getMessage(),
+                // Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private class _OnScrollListener implements OnScrollListener {
@@ -170,6 +164,10 @@ public class UsersFragment extends BaseFragment {
                 mainView.setBackgroundResource(R.drawable.bg_listitem_1);
             else
                 mainView.setBackgroundResource(R.drawable.bg_listitem_2);
+            if (position == getCount() - 1)
+                convertView.findViewById(R.id.bottom).setVisibility(View.VISIBLE);
+            else
+                convertView.findViewById(R.id.bottom).setVisibility(View.GONE);
 
             ViewHolder holder = (ViewHolder) mainView.getTag();
             JSONObject item = (JSONObject) getItem(position);

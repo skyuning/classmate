@@ -7,7 +7,6 @@ import org.xframe.annotation.ViewAnnotation.ViewInject;
 
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.common.Conf;
-import com.example.classmate.requests.BaseRequest;
 import com.example.classmate.requests.ListRequest;
 import com.example.classmate.utils.ImageLoader;
 
@@ -91,8 +90,8 @@ public class NewsesFragment extends BaseListFragment {
     }
 
     @Override
-    protected BaseRequest getRequest(int page) {
-        BaseRequest request = new ListRequest(getActivity(), "news", page);
+    protected ListRequest getRequest() {
+        ListRequest request = new ListRequest(getActivity(), "news", 0);
         return request;
     }
 
