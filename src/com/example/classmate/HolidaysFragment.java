@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -95,14 +97,32 @@ public class HolidaysFragment extends BaseFragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = super.getView(position, convertView, parent);
-            ViewHolder holder = (ViewHolder) v.getTag();
+            View mainView = null;
+            if (convertView == null) {
+                mainView = createMainView(position, parent);
+                FrameLayout wraper = new FrameLayout(mContext);
+                wraper.setPadding(20, 20, 20, 20);
+                LayoutParams params = new LayoutParams(
+                        LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+                wraper.setLayoutParams(params);
+                wraper.addView(mainView);
+                convertView = wraper;
+            } else {
+                mainView = convertView.findViewById(R.id.main);
+            }
+            if ((position % 3) == 0)
+                mainView.setBackgroundResource(R.drawable.bg_listitem_holiday_1);
+            else if ((position % 3) == 1)
+                mainView.setBackgroundResource(R.drawable.bg_listitem_holiday_2);
+            else if ((position % 3) == 2)
+                mainView.setBackgroundResource(R.drawable.bg_listitem_holiday_3);
+            
+            ViewHolder holder = (ViewHolder) mainView.getTag();
 
             Holiday item = (Holiday) getItem(position);
             holder.title.setText(item.title);
-            holder.desc.setText(item.desc);
             holder.date.setText(item.date);
-            return v;
+            return convertView;
         }
 
         @Override
@@ -118,9 +138,6 @@ public class HolidaysFragment extends BaseFragment {
         private static class ViewHolder {
             @ViewInject(id = R.id.title)
             TextView title;
-
-            @ViewInject(id = R.id.desc)
-            TextView desc;
 
             @ViewInject(id = R.id.datetime)
             TextView date;

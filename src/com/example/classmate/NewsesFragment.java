@@ -30,8 +30,6 @@ public class NewsesFragment extends BaseListFragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (position == 5)
-                System.err.println("");
             View mainView = null;
             if (convertView == null) {
                 mainView = createMainView(position, parent);
