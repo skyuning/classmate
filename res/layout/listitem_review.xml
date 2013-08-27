@@ -1,32 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:paddingTop="20dp" >
+
+    <View
+        android:id="@+id/View1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#888" />
 
     <ImageView
         android:id="@+id/photo"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_alignLeft="@id/View1"
+        android:layout_alignParentLeft="false"
+        android:layout_below="@id/View1"
+        android:layout_margin="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/jerry" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/photo"
+        android:layout_marginTop="2dp"
+        android:layout_toRightOf="@+id/photo"
+        android:textColor="#402ce6"
+        android:textSize="16dp"
+        android:text="文杰" />
 
     <TextView
         android:id="@+id/info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/photo"
+        android:layout_marginBottom="2dp"
+        android:layout_toRightOf="@+id/photo"
         android:layout_weight="1"
+        android:textSize="16dp"
         android:text="jerry好帅" />
 
     <TextView
-        android:id="@+id/birth"
+        android:id="@+id/datetime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_alignBaseline="@+id/name"
+        android:layout_alignRight="@+id/View1"
+        android:layout_marginRight="8dp"
+        android:textSize="14dp"
         android:text="7月7日 7:07" />
 
-</LinearLayout>
+</RelativeLayout>

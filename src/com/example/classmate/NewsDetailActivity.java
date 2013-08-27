@@ -14,7 +14,6 @@ import org.xframe.http.XHttpClient;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -27,8 +26,8 @@ import com.example.classmate.common.AddReviewRequest;
 import com.example.classmate.common.BaseActivity;
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.common.Conf;
+import com.example.classmate.common.Utils;
 import com.example.classmate.data.News;
-import com.example.classmate.data.News.Review;
 import com.example.classmate.requests.ListRequest;
 import com.example.classmate.utils.ImageLoader;
 
@@ -60,17 +59,15 @@ public class NewsDetailActivity extends BaseActivity {
         }
         mNews = JSONUtils.json2JavaObject(jo, new News());
 
-        mHeaderView = getLayoutInflater().inflate(R.layout.review_header, null);
+        mHeaderView = getLayoutInflater().inflate(R.layout.news_detail_header, null);
         ViewHolder holder = new ViewHolder();
         ViewAnnotation.bind(mHeaderView, holder);
-        renderItem(jo, holder);
+        renderHeader(jo, holder);
         mListLayout.getListView().addHeaderView(mHeaderView, null, false);
 
-        mFooterView = getLayoutInflater().inflate(R.layout.review_footer, null);
-        mEditText = (EditText) mFooterView.findViewById(R.id.edit);
-        mSubmitBtn = (Button) mFooterView.findViewById(R.id.submit);
+        mEditText = (EditText) findViewById(R.id.edit);
+        mSubmitBtn = (Button) findViewById(R.id.submit);
         mSubmitBtn.setOnClickListener(new OnSubmitBtnClickListener());
-        mListLayout.getListView().addFooterView(mFooterView, null, false);
         mEditText.clearFocus();
 
         ListRequest request = new ListRequest(this, "review", 0);
@@ -102,40 +99,23 @@ public class NewsDetailActivity extends BaseActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View mainView = null;
-            if (convertView == null) {
-                mainView = createMainView(position, parent);
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_wraper, null);
-                ViewGroup wraper = (ViewGroup) convertView.findViewById(R.id.wraper);
-                wraper.addView(mainView);
-            } else {
-                mainView = convertView.findViewById(R.id.main);
-            }
-            if (position % 2 == 0)
-                mainView.setBackgroundResource(R.drawable.bg_listitem_1);
-            else
-                mainView.setBackgroundResource(R.drawable.bg_listitem_2);
-            if (position == getCount() - 1)
-                convertView.findViewById(R.id.bottom).setVisibility(View.VISIBLE);
-            else
-                convertView.findViewById(R.id.bottom).setVisibility(View.GONE);
-
-            
+            View mainView = super.getView(position, convertView, parent);
             ViewHolder holder = (ViewHolder) mainView.getTag();
 
-            Review review = JSONUtils.json2JavaObject(
-                    (JSONObject) getItem(position), new Review());
-            holder.info.setText(review.info);
-            holder.date.setText(review.date);
-            if (TextUtils.isEmpty(review.photo))
+            JSONObject item = (JSONObject) getItem(position);
+            holder.info.setText(item.optString("cinfo"));
+            holder.date.setText(item.optString("cdate"));
+            holder.name.setText(item.optString("u_name") + ":");
+            String photoUrl = item.optString("u_photo");
+            if (Utils.isEmptyString(photoUrl))
                 holder.photo.setVisibility(View.GONE);
             else {
                 holder.photo.setVisibility(View.VISIBLE);
-                String imgUrl = Conf.IMAGE_ROOT + review.photo;
+                String imgUrl = Conf.IMAGE_ROOT + photoUrl;
                 holder.photo.setTag(imgUrl);
                 ImageLoader.loadImage(mContext, holder.photo);
             }
-            return convertView;
+            return mainView;
         }
 
         @Override
@@ -147,20 +127,25 @@ public class NewsDetailActivity extends BaseActivity {
             @ViewInject(id = R.id.photo)
             ImageView photo;
 
-            @ViewInject(id = R.id.birth)
+            @ViewInject(id = R.id.datetime)
             TextView date;
 
             @ViewInject(id = R.id.info)
             TextView info;
+            
+            @ViewInject(id = R.id.name)
+            TextView name;
         }
     }
 
-    private void renderItem(JSONObject item, ViewHolder holder) {
+    private void renderHeader(JSONObject item, ViewHolder holder) {
         String info = item.optString("newsinfo");
         String photoUrl = item.optString("newsphoto");
         int reviewNum = item.optInt("reviewnum");
         holder.info.setText(info + "\n" + photoUrl);
         holder.reviewNum.setText(String.format("%d条评论", reviewNum));
+        holder.name.setText(item.optString("unmae"));
+        holder.datetime.setText(item.optString("newsdate"));
 
         if (TextUtils.isEmpty(photoUrl) || "null".equals(photoUrl))
             holder.photo.setVisibility(View.GONE);
@@ -173,11 +158,17 @@ public class NewsDetailActivity extends BaseActivity {
     }
 
     private class ViewHolder {
-        @ViewInject(id = R.id.news_photo)
+        @ViewInject(id = R.id.photo)
         ImageView photo;
 
-        @ViewInject(id = R.id.news_info)
+        @ViewInject(id = R.id.info)
         TextView info;
+        
+        @ViewInject(id = R.id.name)
+        TextView name;
+        
+        @ViewInject(id = R.id.datetime)
+        TextView datetime;
 
         @ViewInject(id = R.id.review_num)
         TextView reviewNum;
