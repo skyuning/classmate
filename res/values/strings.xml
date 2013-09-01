@@ -18,11 +18,13 @@
 
     <style name="ClassmateTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:windowBackground">@drawable/bg_activity</item>
-   </style>
+    </style>
 
     <dimen name="corner_radius">5dp</dimen>
     <dimen name="border_radius">5.5dp</dimen>
     <dimen name="divider_width">0.5dp</dimen>
     <dimen name="border_width">0.5dp</dimen>
+
+    <string name="title_activity_album">AlbumActivity</string>
 
 </resources>

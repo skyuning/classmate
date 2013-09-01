@@ -38,7 +38,6 @@ public class NewsDetailActivity extends BaseActivity {
     private News mNews;
 
     private View mHeaderView;
-    private View mFooterView;
     private EditText mEditText;
     private Button mSubmitBtn;
 
@@ -108,7 +107,7 @@ public class NewsDetailActivity extends BaseActivity {
             holder.name.setText(item.optString("u_name") + ":");
             String photoUrl = item.optString("u_photo");
             if (Utils.isEmptyString(photoUrl))
-                holder.photo.setVisibility(View.GONE);
+                holder.photo.setVisibility(View.INVISIBLE);
             else {
                 holder.photo.setVisibility(View.VISIBLE);
                 String imgUrl = Conf.IMAGE_ROOT + photoUrl;

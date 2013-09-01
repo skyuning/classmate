@@ -58,8 +58,11 @@ public class SettingFragment extends BaseFragment implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.profile:
-            Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(getActivity(), UserProfileActivity.class));
+            break;
+            
+        case R.id.album:
+            startActivity(new Intent(getActivity(), AlbumActivity.class));
             break;
 
         default:

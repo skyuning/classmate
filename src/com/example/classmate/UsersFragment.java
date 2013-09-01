@@ -62,7 +62,6 @@ public class UsersFragment extends BaseFragment {
         mListView.addHeaderView(mHeaderView);
 
         // footer
-        mListView.addFooterView(inflater.inflate(R.layout.listitem_wraper, null));
         mLoadingFooter = inflater.inflate(R.layout.list_footer_loading, null);
         View loadingView = mLoadingFooter.findViewById(R.id.loading);
         Animation rotateAnimation = AnimationUtils.loadAnimation(getActivity(),
