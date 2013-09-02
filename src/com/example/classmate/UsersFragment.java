@@ -50,8 +50,6 @@ public class UsersFragment extends BaseFragment {
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        setTitle("同学们");
-
         mLayout = (LinearLayout) inflater.inflate(
                 R.layout.fragment_classmate_list, null);
         ViewAnnotation.bind(mLayout, this);

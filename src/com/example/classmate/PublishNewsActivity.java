@@ -12,6 +12,7 @@ import org.xframe.http.XHttpClient;
 
 import com.example.classmate.common.Utils;
 import com.example.classmate.requests.AddNewsRequest;
+import com.example.classmate.utils.WindowAttr;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+@WindowAttr(title = "发布新鲜事")
 public class PublishNewsActivity extends Activity implements OnClickListener {
 
     private static final int REQUEST_CHOOSE_PHOTO = 11;

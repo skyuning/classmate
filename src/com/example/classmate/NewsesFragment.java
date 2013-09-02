@@ -29,7 +29,7 @@ public class NewsesFragment extends BaseListFragment implements OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-        setRightImgBtn(R.drawable.write, this);
+        setRightImgBtn(R.drawable.icon_write, this);
     }
     
     @Override

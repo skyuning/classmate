@@ -1,6 +1,5 @@
 package com.example.classmate.common;
 
-import com.example.classmate.MainActivity;
 import com.example.classmate.R;
 import com.example.classmate.utils.WindowAttr;
 
@@ -20,46 +19,41 @@ public class BaseFragment extends Fragment {
     private String mTitle = "no title";
     private FrameLayout mTitleFrame;
     private FrameLayout mTitleBar;
+    private TextView mTitleTextView;
     private ImageButton mRightImgBtn;
     private Button mRightBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mTitleFrame = (FrameLayout) getActivity().findViewById(
-                R.id.title_bar_frame);
-        mTitleBar = (FrameLayout) getActivity().getLayoutInflater().inflate(
-                R.layout.title_bar, null);
+        WindowAttr anno = getClass().getAnnotation(WindowAttr.class);
+        if (anno != null)
+            mTitle = anno.title();
+        initTitleBar();
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+    
+    private void initTitleBar() {
+        mTitleFrame = (FrameLayout) getActivity().findViewById(R.id.title_bar_frame);
+        mTitleBar = (FrameLayout) getActivity().getLayoutInflater().inflate(R.layout.title_bar, null);
         mTitleFrame.addView(mTitleBar);
+        mTitleTextView = (TextView) mTitleBar.findViewById(R.id.title);
         mRightImgBtn = (ImageButton) mTitleBar.findViewById(R.id.right_img_btn);
         mRightBtn = (Button) mTitleBar.findViewById(R.id.right_btn);
         setRightImgBtn(-1, null);
         setRightBtn(null, null);
-        WindowAttr anno = getClass().getAnnotation(WindowAttr.class);
-        if (anno != null)
-            mTitle = anno.title();
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        TextView titleView = (TextView) mTitleBar.findViewById(R.id.title);
-        titleView.setText(mTitle);
+        mTitleTextView.setText(mTitle);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mTitleFrame.removeView(mTitleBar);
-    }
-
-    protected MainActivity getMainActivity() {
-        return (MainActivity) getActivity();
-    }
-
-    protected void setTitle(String title) {
-        mTitle = title;
     }
 
     protected void setRightImgBtn(int resId, OnClickListener listener) {

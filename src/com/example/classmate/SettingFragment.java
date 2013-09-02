@@ -42,8 +42,6 @@ public class SettingFragment extends BaseFragment implements OnClickListener {
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        setTitle("更多");
-
         mLayout = (LinearLayout) inflater.inflate(R.layout.fragment_more, null);
         ViewAnnotation.bind(mLayout, this);
         mProfileView.setOnClickListener(this);

@@ -47,8 +47,6 @@ public class HolidaysFragment extends BaseFragment {
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        setTitle("纪念日");
-
         mLayout = (LinearLayout) inflater.inflate(
                 R.layout.fragment_holiday_list, null);
         ViewAnnotation.bind(mLayout, this);
