@@ -2,55 +2,85 @@ package com.example.classmate.common;
 
 import com.example.classmate.MainActivity;
 import com.example.classmate.R;
+import com.example.classmate.utils.WindowAttr;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class BaseFragment extends Fragment {
-    
+
     private String mTitle = "no title";
-//    private FrameLayout mTitleFrame;
-//    private FrameLayout mTitleBar;
-    
+    private FrameLayout mTitleFrame;
+    private FrameLayout mTitleBar;
+    private ImageButton mRightImgBtn;
+    private Button mRightBtn;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-//        mTitleFrame = (FrameLayout) getActivity().findViewById(R.id.title_frame);
-//        mTitleBar = (FrameLayout) getActivity().getLayoutInflater().inflate(R.layout.title_bar, null);
-//        mTitleFrame.addView(mTitleBar);
+        mTitleFrame = (FrameLayout) getActivity().findViewById(
+                R.id.title_bar_frame);
+        mTitleBar = (FrameLayout) getActivity().getLayoutInflater().inflate(
+                R.layout.title_bar, null);
+        mTitleFrame.addView(mTitleBar);
+        mRightImgBtn = (ImageButton) mTitleBar.findViewById(R.id.right_img_btn);
+        mRightBtn = (Button) mTitleBar.findViewById(R.id.right_btn);
+        setRightImgBtn(-1, null);
+        setRightBtn(null, null);
+        WindowAttr anno = getClass().getAnnotation(WindowAttr.class);
+        if (anno != null)
+            mTitle = anno.title();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        TextView titleView = (TextView) mTitleBar.findViewById(R.id.title);
-//        titleView.setText(mTitle);
-        getActivity().setTitle(mTitle);
+        TextView titleView = (TextView) mTitleBar.findViewById(R.id.title);
+        titleView.setText(mTitle);
     }
-    
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        mTitleFrame.removeView(mTitleBar);
+        mTitleFrame.removeView(mTitleBar);
     }
 
     protected MainActivity getMainActivity() {
         return (MainActivity) getActivity();
     }
-    
+
     protected void setTitle(String title) {
         mTitle = title;
     }
+
+    protected void setRightImgBtn(int resId, OnClickListener listener) {
+        if (resId == -1) {
+            mRightImgBtn.setVisibility(View.GONE);
+            mRightImgBtn.setOnClickListener(null);
+        } else {
+            mRightImgBtn.setVisibility(View.VISIBLE);
+            mRightImgBtn.setImageResource(resId);
+            mRightImgBtn.setOnClickListener(listener);
+        }
+    }
     
-//    protected ImageButton getRightImgBtn() {
-//        ImageButton rightImgBtn = (ImageButton) mTitleBar.findViewById(R.id.right_img_btn);
-//        return rightImgBtn;
-//    }
+    protected void setRightBtn(String text, OnClickListener listener) {
+        if (text == null) {
+            mRightBtn.setVisibility(View.GONE);
+            mRightBtn.setOnClickListener(null);
+        } else {
+            mRightBtn.setVisibility(View.VISIBLE);
+            mRightBtn.setText(text);
+            mRightBtn.setOnClickListener(listener);
+        }
+    }
 }

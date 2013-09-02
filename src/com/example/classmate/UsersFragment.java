@@ -2,14 +2,17 @@ package com.example.classmate;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpClient;
+
 import com.example.classmate.common.BaseFragment;
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.requests.ListRequest;
+import com.example.classmate.utils.WindowAttr;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@WindowAttr(title = "同事录")
 public class UsersFragment extends BaseFragment {
 
     @ViewInject(id = R.id.listview)

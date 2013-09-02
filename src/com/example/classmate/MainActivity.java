@@ -1,57 +1,105 @@
 package com.example.classmate;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.xframe.annotation.ViewAnnotation;
+import org.xframe.annotation.ViewAnnotation.ViewInject;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 @SuppressLint("NewApi")
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity implements
+        OnCheckedChangeListener, OnClickListener {
+    
+    @ViewInject(id = R.id.radio_news)
+    private RadioButton mRadioNews;
 
-    private static final String[] tags = new String[] { "newses", "holidays",
-            "users", "more" };
-    private static final String[] titles = new String[] { "新鲜事", "纪念日", "通迅录",
-            "设置" };
-    private static final Class<?>[] fragmentClasses = new Class<?>[] {
-            NewsesFragment.class, HolidaysFragment.class, UsersFragment.class,
-            SettingFragment.class };
+    @ViewInject(id = R.id.radio_holiday)
+    private RadioButton mRadioHoliday;
 
-    private ActionBar mActionBar;
+    @ViewInject(id = R.id.radio_users)
+    private RadioButton mRadioUsers;
+
+    @ViewInject(id = R.id.radio_setting)
+    private RadioButton mRadioSetting;
+    
+    public static class Tab {
+        public String title;
+        public Class<?> fragmentClazz;
+        public int iconOnId;
+        public int iconOffId;
+    }
+
+    private static List<Tab> mTabs;
+    static {
+        mTabs = new ArrayList<Tab>();
+        Tab tab;
+
+        tab = new Tab();
+        tab.title = "新鲜事";
+        tab.fragmentClazz = NewsesFragment.class;
+        tab.iconOnId = R.drawable.tab_news_on;
+        tab.iconOffId = R.drawable.tab_news_off;
+        mTabs.add(tab);
+
+        tab = new Tab();
+        tab.title = "纪念日";
+        tab.fragmentClazz = HolidaysFragment.class;
+        tab.iconOnId = R.drawable.tab_holiday_on;
+        tab.iconOffId = R.drawable.tab_holiday_off;
+        mTabs.add(tab);
+
+        tab = new Tab();
+        tab.title = "通讯录";
+        tab.fragmentClazz = UsersFragment.class;
+        tab.iconOnId = R.drawable.tab_users_on;
+        tab.iconOffId = R.drawable.tab_users_off;
+        mTabs.add(tab);
+
+        tab = new Tab();
+        tab.title = "设置";
+        tab.fragmentClazz = SettingFragment.class;
+        tab.iconOnId = R.drawable.tab_setting_on;
+        tab.iconOffId = R.drawable.tab_setting_off;
+        mTabs.add(tab);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_main);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_frame);
+        
         ViewAnnotation.bind(getWindow().getDecorView(), this);
 
-        mActionBar = getActionBar();
-        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        mRadioNews.setOnClickListener(this);
+        mRadioHoliday.setOnClickListener(this);
+        mRadioUsers.setOnClickListener(this);
+        mRadioSetting.setOnClickListener(this);
+        mRadioNews.setOnCheckedChangeListener(this);
+        mRadioHoliday.setOnCheckedChangeListener(this);
+        mRadioUsers.setOnCheckedChangeListener(this);
+        mRadioSetting.setOnCheckedChangeListener(this);
         
-        for (int i = 0; i < tags.length; i++) {
-            TabListener<Fragment> listener = new TabListener<Fragment>(this,
-                    tags[i], fragmentClasses[i]);
-            View tabView = getLayoutInflater().inflate(R.layout.tab, null);
-            tabView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-            Tab tab = mActionBar.newTab()
-//                    .setCustomView(tabView)
-                    .setText(titles[i])
-//                    .setIcon(R.drawable.tab_news_on)
-                    .setTabListener(listener);
-            mActionBar.addTab(tab);
-        }
+        mRadioNews.setChecked(true);
     }
-
+    
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent.getBooleanExtra("session_timeout", false)) {
@@ -62,129 +110,42 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        switch (mActionBar.getSelectedNavigationIndex()) {
-        case 0:
-            inflater.inflate(R.menu.news, menu);
-            break;
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
 
-        default:
-            menu.clear();
-            break;
+        String fragmentName = (String) buttonView.getTag();
+        Fragment fragment = fm.findFragmentByTag(fragmentName);
+        if (fragment != null) {
+            if (isChecked)
+                ft.attach(fragment);
+            else
+                ft.detach(fragment);
+        } else {
+            if (isChecked) {
+                try {
+                    fragment = (Fragment) Class.forName(fragmentName)
+                            .getConstructor().newInstance();
+                    ft.add(R.id.content, fragment, fragmentName);
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return super.onCreateOptionsMenu(menu);
+        ft.commit();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.publish_news:
-            Intent intent = new Intent(this, PublishNewsActivity.class);
-            startActivity(intent);
-            break;
-
-        default:
-            break;
-        }
-        return super.onOptionsItemSelected(item);
+    public void onClick(View v) {
     }
-
-    private class TabListener<T extends Fragment> implements
-            ActionBar.TabListener {
-
-        private Fragment mFragment;
-        private Class<?> mClazz;
-        private String mTag;
-        private Activity mActivity;
-
-        public TabListener(Activity activity, String tag, Class<?> clazz) {
-            mTag = tag;
-            mClazz = clazz;
-            mActivity = activity;
-        }
-
-        @Override
-        public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-            if (null != mFragment)
-                ft.detach(mFragment);
-        }
-
-        @Override
-        public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-            if (null == mFragment) {
-                mFragment = Fragment.instantiate(mActivity, mClazz.getName());
-                ft.add(android.R.id.tabcontent, mFragment, mTag);
-            } else {
-                ft.attach(mFragment);
-            }
-            invalidateOptionsMenu();
-        }
-
-        @Override
-        public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-            // TODO Auto-generated method stub
-
-        }
-    };
-
-    // mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-    // mTabHost.setup();
-    //
-    // TabSpec tabSpec;
-    // TabContentFactory tabContentFactory = new TabContentFactory() {
-    // @Override
-    // public View createTabContent(String tag) {
-    // return new View(MainActivity.this);
-    // }
-    // };
-    //
-    // mTabHost.setOnTabChangedListener(new _OnTabChangeListener());
-    //
-    // for (int i = 0; i < tags.length; i++) {
-    // tabSpec = mTabHost.newTabSpec(tags[i]);
-    // tabSpec.setIndicator(titles[i]);
-    // tabSpec.setContent(tabContentFactory);
-    // mTabHost.addTab(tabSpec);
-    // }
-    // }
-
-    // private class _OnTabChangeListener implements OnTabChangeListener {
-    // @Override
-    // public void onTabChanged(String tabId) {
-    // FragmentManager fm = getSupportFragmentManager();
-    // FragmentTransaction ft = fm.beginTransaction();
-    // Fragment fragment = null;
-    //
-    // for (int i = 0; i < tags.length; i++) {
-    // fragment = fm.findFragmentByTag(tags[i]);
-    // if (!tabId.equals(tags[i])) {
-    // if (null != fragment)
-    // ft.detach(fragment);
-    // } else {
-    // if (fragment == null) {
-    // try {
-    // fragment = (Fragment) fragmentClasses[i]
-    // .getConstructor().newInstance();
-    // } catch (IllegalArgumentException e) {
-    // e.printStackTrace();
-    // } catch (InstantiationException e) {
-    // e.printStackTrace();
-    // } catch (IllegalAccessException e) {
-    // e.printStackTrace();
-    // } catch (InvocationTargetException e) {
-    // e.printStackTrace();
-    // } catch (NoSuchMethodException e) {
-    // e.printStackTrace();
-    // }
-    // ft.add(android.R.id.tabcontent, fragment, tags[i]);
-    // } else {
-    // ft.attach(fragment);
-    // }
-    // }
-    // }
-    //
-    // ft.commit();
-    // }
-    // }
 }

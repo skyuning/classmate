@@ -9,22 +9,19 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="title_activity_publish_news">PublishNewsActivity</string>
+    <string name="title_activity_album">AlbumActivity</string>
 
     <color name="classmate_detail_info">#222</color>
     <color name="classmate_detail_tag">#666</color>
     <color name="divider">#aaa</color>
     <color name="border">#aaa</color>
     <color name="text_gray">#666</color>
-
-    <style name="ClassmateTheme" parent="@android:style/Theme.Holo.Light">
-        <item name="android:windowBackground">@drawable/bg_activity</item>
-    </style>
+    <color name="title_bar_bg">#37383c</color>
+    <color name="tab_bar_bg">@color/title_bar_bg</color>
 
     <dimen name="corner_radius">5dp</dimen>
     <dimen name="border_radius">5.5dp</dimen>
     <dimen name="divider_width">0.5dp</dimen>
     <dimen name="border_width">0.5dp</dimen>
-
-    <string name="title_activity_album">AlbumActivity</string>
 
 </resources>

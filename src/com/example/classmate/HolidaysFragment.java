@@ -14,6 +14,7 @@ import com.example.classmate.common.BaseFragment;
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.data.Holiday;
 import com.example.classmate.requests.HolidayListRequest;
+import com.example.classmate.utils.WindowAttr;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
+@WindowAttr(title = "纪念日")
 public class HolidaysFragment extends BaseFragment {
 
     @ViewInject(id = R.id.listview)
@@ -56,7 +58,6 @@ public class HolidaysFragment extends BaseFragment {
         mListView.addHeaderView(mHeaderView);
 
         mData = new ArrayList<Holiday>();
-        mListView.addFooterView(inflater.inflate(R.layout.listitem_wraper, null));
         mAdapter = new CommemorationAdapter(getActivity(), mData);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new _OnItemClickListener());

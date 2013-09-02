@@ -9,11 +9,13 @@ import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.common.Conf;
 import com.example.classmate.requests.ListRequest;
 import com.example.classmate.utils.ImageLoader;
+import com.example.classmate.utils.WindowAttr;
 
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
@@ -21,7 +23,20 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class NewsesFragment extends BaseListFragment {
+@WindowAttr(title = "新鲜事")
+public class NewsesFragment extends BaseListFragment implements OnClickListener {
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setRightImgBtn(R.drawable.write, this);
+    }
+    
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(getActivity(), PublishNewsActivity.class);
+        startActivity(intent);
+    }
 
     private class NewsAdapter extends CommonAdapter {
 

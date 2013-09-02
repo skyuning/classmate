@@ -1,6 +1,7 @@
 package com.example.classmate;
 
 import com.example.classmate.common.BaseFragment;
+import com.example.classmate.utils.WindowAttr;
 
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
@@ -13,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+@WindowAttr(title = "设置")
 public class SettingFragment extends BaseFragment implements OnClickListener {
 
     @ViewInject(id = R.id.profile)
