@@ -10,6 +10,7 @@
     <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="title_activity_publish_news">PublishNewsActivity</string>
     <string name="title_activity_album">AlbumActivity</string>
+    <string name="image_content">null</string>
 
     <color name="classmate_detail_info">#222</color>
     <color name="classmate_detail_tag">#666</color>

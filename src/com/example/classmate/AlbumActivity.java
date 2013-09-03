@@ -2,11 +2,14 @@ package com.example.classmate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 import org.xframe.http.XHttpCallback;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpClient;
+
 import com.example.classmate.common.BaseActivity;
+import com.example.classmate.common.Conf;
 import com.example.classmate.common.Utils;
 import com.example.classmate.requests.AddAlbumRequest;
 import com.example.classmate.requests.BaseRequest;
@@ -25,29 +28,67 @@ public class AlbumActivity extends BaseActivity implements OnClickListener {
 
     private static int REQ_CHOOSE_PHOTO = 11;
     
+    @ViewInject(id = R.id.cur_photo)
+    private ImageView mCurPhoto;
+
+    @ViewInject(id = R.id.photo0)
+    private ImageView mPhoto0;
+    
     @ViewInject(id = R.id.photo1)
     private ImageView mPhoto1;
+
+    @ViewInject(id = R.id.photo2)
+    private ImageView mPhoto2;
+
+    @ViewInject(id = R.id.photo3)
+    private ImageView mPhoto3;
+
+    @ViewInject(id = R.id.photo4)
+    private ImageView mPhoto4;
+    
+    private ImageView[] mPreviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
-        setRightImgBtn(R.drawable.icon_add, this);
+        ViewAnnotation.bind(this, this);
+        mPreviews = new ImageView[5];
+        mPreviews[0] = mPhoto0;
+        mPreviews[1] = mPhoto1;
+        mPreviews[2] = mPhoto2;
+        mPreviews[3] = mPhoto3;
+        mPreviews[4] = mPhoto4;
+        
+        setRightImgBtn(android.R.drawable.ic_menu_delete, this);
         
         asyncLoadAlbum();
     }
     
     private void asyncLoadAlbum() {
         BaseRequest request = new ReadAlbumRequest(this);
-        XHttpCallback callback = new XHttpCallbacks.DebugHttpCallback(this) {
+        XHttpCallback callback = new XHttpCallbacks.DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {
-                super.onSuccess(result);
                 JSONArray ja = (JSONArray) result.data;
                 try {
-                    mPhoto1.setTag(ja.getJSONObject(0).getString("photoUrl"));
-                    ImageLoader.loadImage(AlbumActivity.this, mPhoto1);
+                    
+                    for (int i = 0; i<5; i++) {
+                        String url = null;
+                        if (i < ja.length()) {
+                            url = Conf.IMAGE_ROOT + ja.getJSONObject(i).getString("photoUrl");
+                            mPreviews[i].setTag(url);
+                            ImageLoader.loadImage(AlbumActivity.this, mPreviews[i]);
+                        } else
+                            mPreviews[i].setTag(null);
+                        mPreviews[i].setOnClickListener(AlbumActivity.this);
+                    }
+                    
+                    mCurPhoto.setTag(mPreviews[0].getTag());
+                    ImageLoader.loadImageFromNet(AlbumActivity.this, mCurPhoto);
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -59,9 +100,18 @@ public class AlbumActivity extends BaseActivity implements OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.right_img_btn) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            startActivityForResult(intent, REQ_CHOOSE_PHOTO);
+            // TODO: delete photo
+        } else {
+            String url = (String) v.getTag();
+            if (url != null) {
+                v.setBackgroundDrawable(null);
+                mCurPhoto.setTag(url);
+                ImageLoader.loadImage(this, mCurPhoto);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, REQ_CHOOSE_PHOTO);
+            }
         }
     }
 
@@ -72,9 +122,14 @@ public class AlbumActivity extends BaseActivity implements OnClickListener {
             String imgPath = Utils.uri2Path(this, data.getData());
             try {
                 AddAlbumRequest request = new AddAlbumRequest(this, imgPath);
-                XHttpClient.sendRequest(request,
-                        new XHttpCallbacks.DebugHttpCallback(this));
+                XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback() {
+                    @Override
+                    public void onSuccess(AHttpResult result) {
+                        asyncLoadAlbum();
+                    }
+                });
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

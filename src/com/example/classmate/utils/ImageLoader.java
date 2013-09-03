@@ -83,10 +83,10 @@ public class ImageLoader {
         }
         
         iv.setImageResource(loadingImageResId);
-        asyncLoadImage(context, iv);
+        loadImageFromNet(context, iv);
     }
     
-    private static void asyncLoadImage(final Context context, final ImageView iv) {
+    public static void loadImageFromNet(final Context context, final ImageView iv) {
         final String path = (String) iv.getTag();
                 
         AsyncTask<Void, Void, Bitmap> asyncTask = new AsyncTask<Void, Void, Bitmap>() {

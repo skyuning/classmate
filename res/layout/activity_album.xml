@@ -1,57 +1,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/cur_photo"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:src="@drawable/girl" />
+        android:src="@drawable/jerry" />
 
     <LinearLayout
         android:id="@+id/photoBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:padding="5dp"
+        android:background="@color/tab_bar_bg"
         android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/photo0"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/image_content"
+            android:background="@drawable/photo_frame"
+            android:src="@android:drawable/ic_input_add" />
 
         <ImageView
             android:id="@+id/photo1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/icon_add" />
+            android:contentDescription="@string/image_content"
+            android:background="@drawable/photo_frame"
+            android:src="@android:drawable/ic_input_add" />
 
         <ImageView
             android:id="@+id/photo2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/icon_add" />
+            android:contentDescription="@string/image_content"
+            android:background="@drawable/photo_frame"
+            android:src="@android:drawable/ic_input_add" />
 
         <ImageView
             android:id="@+id/photo3"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/icon_add" />
+            android:contentDescription="@string/image_content"
+            android:background="@drawable/photo_frame"
+            android:src="@android:drawable/ic_input_add" />
 
         <ImageView
             android:id="@+id/photo4"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/icon_add" />
-
-        <ImageView
-            android:id="@+id/photo5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/icon_add" />
-
+            android:contentDescription="@string/image_content"
+            android:background="@drawable/photo_frame"
+            android:src="@android:drawable/ic_input_add" />
     </LinearLayout>
 
 </LinearLayout>
