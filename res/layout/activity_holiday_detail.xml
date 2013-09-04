@@ -2,13 +2,73 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="16dp" >
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:text="TextView" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_holiday_detail_frame"
+        android:orientation="vertical"
+        android:padding="1dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_holiday_detail_frame_upper"
+            android:padding="10dp" >
+
+            <FrameLayout
+                android:id="@+id/holiday_detail_layout_icon_frame"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/photo_frame" >
+
+                <ImageView
+                    android:id="@+id/holiday_detail_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/jerry" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/photo_frame" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/holiday_detial_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/holiday_detail_layout_icon_frame"
+                android:text="三里屯聚餐"
+                android:textColor="#5a3ed6"
+                android:textSize="25dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/holiday_detail_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="一起喝点小酒，唱歌歌什么么，费用AA，参加者联系jerry"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/holiday_detail_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:layout_marginTop="15dp"
+            android:text="2013年9月3日"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>

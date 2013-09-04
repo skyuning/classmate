@@ -1,8 +1,18 @@
 package com.example.classmate.data;
 
+import java.io.Serializable;
+
 import org.xframe.annotation.JSONUtils.JSONDict;
 
-public class Holiday {
+public class Holiday implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    @JSONDict(name = "category")
+    public int category;
+
     @JSONDict(name = "date", defVal = "")
     public String date;
 

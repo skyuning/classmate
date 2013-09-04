@@ -1,10 +1,9 @@
 package com.example.classmate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
-import org.xframe.annotation.JSONUtils;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 import org.xframe.http.XHttpCallbacks;
@@ -26,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
 import android.widget.AbsListView.LayoutParams;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -82,9 +82,8 @@ public class HolidaysFragment extends BaseFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
              Intent intent = new Intent(getActivity(), HolidayDetailActivity.class);
-             Holiday holiday = (Holiday) parent.getItemAtPosition(position);
-             JSONObject jo = JSONUtils.java2JsonObject(holiday, new JSONObject());
-             intent.putExtra("holiday_detail", jo.toString());
+             intent.putExtra("holiday",
+                     (Serializable) parent.getItemAtPosition(position));
              startActivity(intent);
         }
     }
@@ -109,16 +108,21 @@ public class HolidaysFragment extends BaseFragment {
             } else {
                 mainView = convertView.findViewById(R.id.main);
             }
-            if ((position % 3) == 0)
-                mainView.setBackgroundResource(R.drawable.bg_listitem_holiday_1);
-            else if ((position % 3) == 1)
-                mainView.setBackgroundResource(R.drawable.bg_listitem_holiday_2);
-            else if ((position % 3) == 2)
-                mainView.setBackgroundResource(R.drawable.bg_listitem_holiday_3);
             
-            ViewHolder holder = (ViewHolder) mainView.getTag();
-
             Holiday item = (Holiday) getItem(position);
+            ViewHolder holder = (ViewHolder) mainView.getTag();
+            
+            if (item.category == 1) {
+                mainView.setBackgroundResource(R.drawable.bg_listitem_holiday_birthday);
+                holder.icon.setImageResource(R.drawable.holiday_birthday);
+            } else if (item.category == 2) {
+                mainView.setBackgroundResource(R.drawable.bg_listitem_holiday_festival);
+                holder.icon.setImageResource(R.drawable.holiday_festival);
+            } else if (item.category == 3) {
+                mainView.setBackgroundResource(R.drawable.bg_listitem_holiday_activity);
+                holder.icon.setImageResource(R.drawable.holiday_activity);
+            }
+
             holder.title.setText(item.title);
             holder.date.setText(item.date);
             return convertView;
@@ -135,6 +139,9 @@ public class HolidaysFragment extends BaseFragment {
         }
 
         private static class ViewHolder {
+            @ViewInject(id = R.id.icon)
+            ImageView icon;
+
             @ViewInject(id = R.id.title)
             TextView title;
 

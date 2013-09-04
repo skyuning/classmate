@@ -20,6 +20,7 @@ public class BaseFragment extends Fragment {
     private FrameLayout mTitleFrame;
     private FrameLayout mTitleBar;
     private TextView mTitleTextView;
+    private ImageButton mLeftImgBtn;
     private ImageButton mRightImgBtn;
     private Button mRightBtn;
 
@@ -38,10 +39,12 @@ public class BaseFragment extends Fragment {
         mTitleBar = (FrameLayout) getActivity().getLayoutInflater().inflate(R.layout.title_bar, null);
         mTitleFrame.addView(mTitleBar);
         mTitleTextView = (TextView) mTitleBar.findViewById(R.id.title);
+        mLeftImgBtn = (ImageButton) mTitleBar.findViewById(R.id.left_img_btn);
         mRightImgBtn = (ImageButton) mTitleBar.findViewById(R.id.right_img_btn);
         mRightBtn = (Button) mTitleBar.findViewById(R.id.right_btn);
         setRightImgBtn(-1, null);
         setRightBtn(null, null);
+        mLeftImgBtn.setVisibility(View.INVISIBLE);
     }
 
     @Override

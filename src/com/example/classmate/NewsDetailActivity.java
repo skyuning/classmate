@@ -30,7 +30,9 @@ import com.example.classmate.common.Utils;
 import com.example.classmate.data.News;
 import com.example.classmate.requests.ListRequest;
 import com.example.classmate.utils.ImageLoader;
+import com.example.classmate.utils.WindowAttr;
 
+@WindowAttr(title = "新鲜事详情")
 public class NewsDetailActivity extends BaseActivity {
 
     @ViewInject(id = R.id.list_layout)
@@ -84,9 +86,7 @@ public class NewsDetailActivity extends BaseActivity {
             AddReviewRequest request = new AddReviewRequest(
                     NewsDetailActivity.this, mNews.newsId, mEditText.getText()
                             .toString());
-            XHttpClient.sendRequest(request,
-                    new XHttpCallbacks.DebugHttpCallback(
-                            NewsDetailActivity.this));
+            XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback());
         }
     }
 

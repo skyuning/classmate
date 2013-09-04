@@ -61,7 +61,7 @@ public class PublishNewsActivity extends Activity implements OnClickListener {
             try {
                 XHttpClient.sendRequest(
                         new AddNewsRequest(this, mImgPath, mNewsInfo.getText().toString()),
-                        new XHttpCallbacks.DebugHttpCallback(this) {
+                        new XHttpCallbacks.DefaultHttpCallback() {
 
                             @Override
                             public void onSuccess(AHttpResult result) {

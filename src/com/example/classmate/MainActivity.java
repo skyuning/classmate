@@ -7,7 +7,6 @@ import java.util.List;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,7 +20,6 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-@SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements
         OnCheckedChangeListener, OnClickListener {
     

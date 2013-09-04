@@ -6,7 +6,8 @@ import java.io.UnsupportedEncodingException;
 import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
-import org.xframe.http.XHttpCallbacks.DebugHttpCallback;
+import org.xframe.http.XHttpCallbacks;
+import org.xframe.http.XHttpCallbacks.DefaultHttpCallback;
 import org.xframe.http.XHttpClient;
 import org.xframe.utils.ImageUtils;
 
@@ -21,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import com.example.classmate.common.BaseActivity;
 import com.example.classmate.common.Conf;
 import com.example.classmate.common.Test;
@@ -28,7 +30,9 @@ import com.example.classmate.common.Utils;
 import com.example.classmate.requests.UpdateUserRequest;
 import com.example.classmate.requests.UserInfoRequest;
 import com.example.classmate.utils.ImageLoader;
+import com.example.classmate.utils.WindowAttr;
 
+@WindowAttr(title = "我的资料")
 public class UserProfileActivity extends BaseActivity {
 
     private static final int REQUEST_CHOOSE_PHOTO = 11;
@@ -99,7 +103,7 @@ public class UserProfileActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-        XHttpClient.sendRequest(request, new DebugHttpCallback(this) {
+        XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {
                 showToast("提交成功");
@@ -108,7 +112,7 @@ public class UserProfileActivity extends BaseActivity {
     }
     
     private void asyncLoadProfile() {
-        XHttpClient.sendRequest(new UserInfoRequest(this), new DebugHttpCallback(this) {
+        XHttpClient.sendRequest(new UserInfoRequest(this), new DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {
                 JSONObject jo = (JSONObject) result.data;

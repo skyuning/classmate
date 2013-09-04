@@ -7,8 +7,11 @@ import org.xframe.annotation.ViewAnnotation.ViewInject;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import com.example.classmate.common.BaseActivity;
 
+import com.example.classmate.common.BaseActivity;
+import com.example.classmate.utils.WindowAttr;
+
+@WindowAttr(title = "同学详情")
 public class UserDetailActivity extends BaseActivity {
 
     @ViewInject(id = R.id.name)

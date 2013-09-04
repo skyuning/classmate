@@ -32,7 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-@WindowAttr(title = "同事录")
+@WindowAttr(title = "同学录")
 public class UsersFragment extends BaseFragment {
 
     @ViewInject(id = R.id.listview)

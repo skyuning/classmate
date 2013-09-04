@@ -19,6 +19,7 @@ public class BaseActivity extends Activity {
     private String mTitle;
     private FrameLayout mTitleBar;
     private TextView mTitleTextView;
+    private ImageButton mLeftImgBtn;
     private ImageButton mRightImgBtn;
     private Button mRightBtn;
 
@@ -42,10 +43,17 @@ public class BaseActivity extends Activity {
     private void initTitleBar() {
         mTitleBar = (FrameLayout) findViewById(R.id.title_bar);
         mTitleTextView = (TextView) mTitleBar.findViewById(R.id.title);
+        mLeftImgBtn = (ImageButton) mTitleBar.findViewById(R.id.left_img_btn);
         mRightImgBtn = (ImageButton) mTitleBar.findViewById(R.id.right_img_btn);
         mRightBtn = (Button) mTitleBar.findViewById(R.id.right_btn);
         setRightImgBtn(-1, null);
         setRightBtn(null, null);
+        mLeftImgBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -58,6 +66,17 @@ public class BaseActivity extends Activity {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
+    protected void setLeftImgBtn(int resId, OnClickListener listener) {
+        if (resId == -1) {
+            mLeftImgBtn.setVisibility(View.GONE);
+            mLeftImgBtn.setOnClickListener(null);
+        } else {
+            mLeftImgBtn.setVisibility(View.VISIBLE);
+            mLeftImgBtn.setImageResource(resId);
+            mLeftImgBtn.setOnClickListener(listener);
+        }
+    }
+    
     protected void setRightImgBtn(int resId, OnClickListener listener) {
         if (resId == -1) {
             mRightImgBtn.setVisibility(View.GONE);
