@@ -2,6 +2,7 @@ package com.example.classmate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 import org.xframe.http.XHttpCallback;
@@ -13,6 +14,7 @@ import com.example.classmate.common.Conf;
 import com.example.classmate.common.Utils;
 import com.example.classmate.requests.AddAlbumRequest;
 import com.example.classmate.requests.BaseRequest;
+import com.example.classmate.requests.DeleteAlbumRequest;
 import com.example.classmate.requests.ReadAlbumRequest;
 import com.example.classmate.utils.ImageLoader;
 import com.example.classmate.utils.WindowAttr;
@@ -47,6 +49,8 @@ public class AlbumActivity extends BaseActivity implements OnClickListener {
     private ImageView mPhoto4;
     
     private ImageView[] mPreviews;
+    
+    private JSONArray mPhotoInfos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,7 @@ public class AlbumActivity extends BaseActivity implements OnClickListener {
         mPreviews[3] = mPhoto3;
         mPreviews[4] = mPhoto4;
         
-        setRightImgBtn(android.R.drawable.ic_menu_delete, this);
+        setRightImgBtn(R.drawable.icon_delete, this);
         
         asyncLoadAlbum();
     }
@@ -70,22 +74,24 @@ public class AlbumActivity extends BaseActivity implements OnClickListener {
         XHttpCallback callback = new XHttpCallbacks.DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {
-                JSONArray ja = (JSONArray) result.data;
+                mPhotoInfos = (JSONArray) result.data;
                 try {
-                    
                     for (int i = 0; i<5; i++) {
                         String url = null;
-                        if (i < ja.length()) {
-                            url = Conf.IMAGE_ROOT + ja.getJSONObject(i).getString("photoUrl");
+                        if (i < mPhotoInfos.length()) {
+                            url = Conf.IMAGE_ROOT + mPhotoInfos.getJSONObject(i).getString("photoUrl");
                             mPreviews[i].setTag(url);
                             ImageLoader.loadImage(AlbumActivity.this, mPreviews[i]);
-                        } else
+                            mPreviews[i].setBackgroundDrawable(null);
+                        } else {
                             mPreviews[i].setTag(null);
-                        mPreviews[i].setOnClickListener(AlbumActivity.this);
+                            mPreviews[i].setImageResource(android.R.drawable.ic_input_add);
+                            mPreviews[i].setBackgroundResource(R.drawable.photo_frame);
+                        }
+                        mPreviews[0].setOnClickListener(AlbumActivity.this);
                     }
-                    
-                    mCurPhoto.setTag(mPreviews[0].getTag());
-                    ImageLoader.loadImageFromNet(AlbumActivity.this, mCurPhoto);
+                    if (mPhotoInfos.length() > 0)
+                        onClick(mPreviews[0]);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -100,7 +106,24 @@ public class AlbumActivity extends BaseActivity implements OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.right_img_btn) {
-            // TODO: delete photo
+            mCurPhoto.setImageDrawable(null);
+            String delUrl = (String) mCurPhoto.getTag();
+            for (int i=0; i<mPhotoInfos.length(); i++) {
+                JSONObject jo = mPhotoInfos.optJSONObject(i);
+                if (jo == null)
+                    continue;
+                String url = Conf.IMAGE_ROOT + jo.optString("photoUrl");
+                if (url.equals(delUrl)) {
+                    int photoId = jo.optInt("photoId");
+                    DeleteAlbumRequest request = new DeleteAlbumRequest(this, photoId);
+                    XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback() {
+                        @Override
+                        public void onSuccess(AHttpResult result) {
+                            asyncLoadAlbum();
+                        }
+                    });
+                }
+            }
         } else {
             String url = (String) v.getTag();
             if (url != null) {

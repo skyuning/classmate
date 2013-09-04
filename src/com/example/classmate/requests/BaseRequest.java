@@ -41,9 +41,14 @@ public abstract class BaseRequest extends XHttpRequest {
     @Override
     public Object handleResponse(HttpResponse response, String content) throws Exception {
         JSONObject jo = new JSONObject(content);
-        int status = jo.getInt("status");
+        int status = 0;
+        if (jo.has("status"))
+            jo.getInt("status");
+        else
+            jo.getInt("errCode");
+        
         if (status == 0) {
-            return jo.get("message");
+            return jo.opt("message");
         } else if (status == -2) {
             Intent intent = new Intent(mContext, MainActivity.class);
             intent.putExtra("session_timeout", true);
