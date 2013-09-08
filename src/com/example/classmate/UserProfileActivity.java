@@ -95,6 +95,9 @@ public class UserProfileActivity extends BaseActivity {
         request.addParam("birth", mBirthView.getText().toString());
         request.addParam("cellphone", mPhoneView.getText().toString());
         request.addParam("address", mAddressView.getText().toString());
+        request.addParam("email", mEmailView.getText().toString());
+        request.addParam("qq", mQQView.getText().toString());
+        request.addParam("work", mWorkView.getText().toString());
         if (mIconPath != null) {
             try {
                 request.addMultipartImage("photo", mIconPath);

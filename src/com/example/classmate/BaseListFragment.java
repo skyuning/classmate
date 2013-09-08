@@ -37,7 +37,7 @@ public abstract class BaseListFragment extends BaseFragment implements
     private LinearLayout mLayout;
     protected List<JSONObject> mData;
     protected CommonAdapter mAdapter;
-    private int mPage;
+    protected int mPage;
     private boolean mIsLoading;
     private View mLoadingFooter;
     private View mHeaderView;

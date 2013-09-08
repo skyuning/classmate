@@ -11,6 +11,7 @@ import com.example.classmate.requests.ListRequest;
 import com.example.classmate.utils.ImageLoader;
 import com.example.classmate.utils.WindowAttr;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -25,6 +26,8 @@ import android.widget.TextView;
 
 @WindowAttr(title = "新鲜事")
 public class NewsesFragment extends BaseListFragment implements OnClickListener {
+    
+    private static final int REQ_PUBLISH_NEWS = 11;
 
     @Override
     public void onResume() {
@@ -35,8 +38,21 @@ public class NewsesFragment extends BaseListFragment implements OnClickListener 
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(getActivity(), PublishNewsActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQ_PUBLISH_NEWS);
     }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_PUBLISH_NEWS && resultCode == Activity.RESULT_OK) {
+        // TODO Auto-generated method stub
+            mData.clear();
+            mListView.setOnScrollListener(this);
+            mPage = 0;
+        }
+    }
+
+
 
     private class NewsAdapter extends CommonAdapter {
 
@@ -65,7 +81,7 @@ public class NewsesFragment extends BaseListFragment implements OnClickListener 
             String info = item.optString("newsinfo");
             String photoUrl = item.optString("newsphoto");
             int reviewNum = item.optInt("reviewnum");
-            holder.info.setText(info + "\n" + photoUrl);
+            holder.info.setText(info);
             holder.reviewNum.setText(String.format("%d条评论", reviewNum));
 
             if (TextUtils.isEmpty(photoUrl) || "null".equals(photoUrl))

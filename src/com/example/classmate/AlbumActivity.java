@@ -88,7 +88,7 @@ public class AlbumActivity extends BaseActivity implements OnClickListener {
                             mPreviews[i].setImageResource(android.R.drawable.ic_input_add);
                             mPreviews[i].setBackgroundResource(R.drawable.photo_frame);
                         }
-                        mPreviews[0].setOnClickListener(AlbumActivity.this);
+                        mPreviews[i].setOnClickListener(AlbumActivity.this);
                     }
                     if (mPhotoInfos.length() > 0)
                         onClick(mPreviews[0]);

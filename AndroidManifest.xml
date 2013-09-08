@@ -20,7 +20,8 @@
         android:theme="@style/MyTheme" >
         <activity
             android:name="com.example.classmate.WelcomeActivity"
-            android:label="@string/title_activity_welcome" >
+            android:label="@string/title_activity_welcome"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +30,8 @@
         </activity>
         <activity
             android:name="com.example.classmate.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name="com.tencent.tauth.AuthActivity"

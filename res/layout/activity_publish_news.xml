@@ -7,8 +7,7 @@
     <EditText
         android:id="@+id/news_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="200dp"
         android:background="@drawable/bg_table"
         android:ems="10"
         android:gravity="top"
@@ -18,10 +17,10 @@
     <ImageView
         android:id="@+id/news_photo"
         android:layout_width="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
-        android:maxHeight="150dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/photo_frame"
         android:scaleType="fitXY"
-        android:src="@drawable/jerry" />
+        android:src="@android:drawable/ic_input_add" />
 
 </LinearLayout>

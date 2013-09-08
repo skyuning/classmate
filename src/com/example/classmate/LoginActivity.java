@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 
     @ViewInject(id = R.id.login)
     private Button mLoginBtn;
+    
+    @ViewInject(id = R.id.progressBar1)
+    private ProgressBar mProgressBar;
 
     private QQLoginer mQQLoginer;
 
@@ -40,6 +44,7 @@ public class LoginActivity extends Activity implements OnClickListener {
         ViewAnnotation.bind(getWindow().getDecorView(), this);
 
         mLoginBtn.setOnClickListener(this);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override

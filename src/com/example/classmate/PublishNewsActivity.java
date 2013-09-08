@@ -10,6 +10,7 @@ import org.xframe.annotation.ViewAnnotation.ViewInject;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpClient;
 
+import com.example.classmate.common.BaseActivity;
 import com.example.classmate.common.Utils;
 import com.example.classmate.requests.AddNewsRequest;
 import com.example.classmate.utils.WindowAttr;
@@ -19,8 +20,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -28,7 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 @WindowAttr(title = "发布新鲜事")
-public class PublishNewsActivity extends Activity implements OnClickListener {
+public class PublishNewsActivity extends BaseActivity implements OnClickListener {
 
     private static final int REQUEST_CHOOSE_PHOTO = 11;
 
@@ -47,35 +46,27 @@ public class PublishNewsActivity extends Activity implements OnClickListener {
         ViewAnnotation.bind(getWindow().getDecorView(), this);
 
         mNewsPhoto.setOnClickListener(this);
+        setRightImgBtn(R.drawable.icon_ok, this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.publish_news, menu);
-        return true;
-    }
+    public void submit() {
+        try {
+            XHttpClient.sendRequest(new AddNewsRequest(this, mImgPath,
+                    mNewsInfo.getText().toString()),
+                    new XHttpCallbacks.DefaultHttpCallback() {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_submit) {
-            try {
-                XHttpClient.sendRequest(
-                        new AddNewsRequest(this, mImgPath, mNewsInfo.getText().toString()),
-                        new XHttpCallbacks.DefaultHttpCallback() {
-
-                            @Override
-                            public void onSuccess(AHttpResult result) {
-                                Toast.makeText(PublishNewsActivity.this, "上传失败", Toast.LENGTH_LONG).show();
-                                setResult(RESULT_OK);
-                                finish();
-                            }
-                        });
-            } catch (UnsupportedEncodingException e) {
-                Toast.makeText(this, "上传失败", Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
+                        @Override
+                        public void onSuccess(AHttpResult result) {
+                            Toast.makeText(PublishNewsActivity.this, "上传成功",
+                                    Toast.LENGTH_LONG).show();
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    });
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(this, "上传失败", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -85,6 +76,10 @@ public class PublishNewsActivity extends Activity implements OnClickListener {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
+            break;
+            
+        case R.id.right_img_btn:
+            submit();
             break;
 
         default:

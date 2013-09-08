@@ -18,7 +18,7 @@ public class WelcomeActivity extends Activity {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
