@@ -169,4 +169,15 @@
         </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_red_btn"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="退出登录"
+        android:textColor="#fff" />
+
 </LinearLayout>

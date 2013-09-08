@@ -9,7 +9,6 @@ import org.xframe.http.XHttpRequest.XHttpMethod;
 import android.content.Context;
 
 import com.example.classmate.common.Conf;
-import com.example.classmate.common.Test;
 
 @XHttpAttr(method = XHttpMethod.POST)
 public class AddNewsRequest extends BaseRequest {
@@ -35,7 +34,7 @@ public class AddNewsRequest extends BaseRequest {
     @Override
     protected String buildUrl() {
         String url = String.format(Conf.HOST + Conf.PATH
-                + "news?action=add&token=%s&info=%s", Test.token, mInfo);
+                + "news?action=add&token=%s&info=%s", mToken, mInfo);
         return url;
     }
 }

@@ -14,16 +14,21 @@ import com.example.classmate.MainActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 public abstract class BaseRequest extends XHttpRequest {
     
     protected Context mContext;
+    protected String mToken;
+    protected String mOpenId;
     
     public BaseRequest(Context context) {
         mContext = context;
-        String token = context.getSharedPreferences(
-                "session", Context.MODE_PRIVATE).getString("token", "");
-        addParam("token", token);
+        SharedPreferences sp = context.getSharedPreferences(
+                "session", Context.MODE_PRIVATE);
+        mToken = sp.getString("token", "");
+        mOpenId = sp.getString("openid", "");
+        addParam("token", mToken);
     }
     
     @Override

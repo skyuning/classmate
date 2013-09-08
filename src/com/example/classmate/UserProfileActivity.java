@@ -25,7 +25,6 @@ import android.widget.ImageView;
 
 import com.example.classmate.common.BaseActivity;
 import com.example.classmate.common.Conf;
-import com.example.classmate.common.Test;
 import com.example.classmate.common.Utils;
 import com.example.classmate.requests.UpdateUserRequest;
 import com.example.classmate.requests.UserInfoRequest;
@@ -91,7 +90,7 @@ public class UserProfileActivity extends BaseActivity {
     }
     
     private void onOKBtnClicked(View v) {
-        UpdateUserRequest request = new UpdateUserRequest(UserProfileActivity.this, Test.openid);
+        UpdateUserRequest request = new UpdateUserRequest(UserProfileActivity.this);
         request.addParam("name", mNameView.getText().toString());
         request.addParam("birth", mBirthView.getText().toString());
         request.addParam("cellphone", mPhoneView.getText().toString());

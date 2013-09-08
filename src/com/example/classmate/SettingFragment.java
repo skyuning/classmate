@@ -6,12 +6,14 @@ import com.example.classmate.utils.WindowAttr;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 @WindowAttr(title = "设置")
@@ -34,6 +36,9 @@ public class SettingFragment extends BaseFragment implements OnClickListener {
 
     @ViewInject(id = R.id.copyright)
     private View mCopyrightView;
+    
+    @ViewInject(id = R.id.logout)
+    private Button mLogoutBtn;
 
     private LinearLayout mLayout;
 
@@ -50,6 +55,7 @@ public class SettingFragment extends BaseFragment implements OnClickListener {
         mUpdateView.setOnClickListener(this);
         mFeedbackView.setOnClickListener(this);
         mCopyrightView.setOnClickListener(this);
+        mLogoutBtn.setOnClickListener(this);
 
         return mLayout;
     }
@@ -63,6 +69,13 @@ public class SettingFragment extends BaseFragment implements OnClickListener {
             
         case R.id.album:
             startActivity(new Intent(getActivity(), AlbumActivity.class));
+            break;
+            
+        case R.id.logout:
+            getActivity().getSharedPreferences("session", Context.MODE_PRIVATE)
+            .edit().clear().commit();
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
             break;
 
         default:

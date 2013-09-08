@@ -7,12 +7,11 @@ import org.xframe.http.XHttpRequest.XHttpMethod;
 import android.content.Context;
 
 import com.example.classmate.common.Conf;
-import com.example.classmate.common.Test;
 
 @XHttpAttr(method = XHttpMethod.POST)
 public class UpdateUserRequest extends BaseRequest {
 
-    public UpdateUserRequest(Context context, String openid) {
+    public UpdateUserRequest(Context context) {
         super(context);
     }
 
@@ -25,9 +24,7 @@ public class UpdateUserRequest extends BaseRequest {
 
     @Override
     protected String buildUrl() {
-        String token = mContext.getSharedPreferences(
-                "session", Context.MODE_PRIVATE).getString("token", "");
         return Conf.HOST + Conf.PATH + "user.jsp?action=update"
-                + String.format("&token=%s&openid=%s", token, Test.openid);
+                + String.format("&token=%s&openid=%s", mToken, mOpenId);
     }
 }

@@ -1,27 +1,37 @@
 package com.example.classmate;
 
+import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
+import org.xframe.http.XHttpCallback;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpClient;
 import org.xframe.http.XHttpRequest;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.classmate.common.Test;
+import com.example.classmate.common.Conf;
+import com.example.classmate.requests.GetQQInfoRequest;
 import com.example.classmate.requests.LoginRequest;
+import com.tencent.tauth.bean.OpenId;
+import com.tencent.tauth.http.Callback;
 
 public class LoginActivity extends Activity implements OnClickListener {
 
+    @ViewInject(id = R.id.title)
+    private TextView mTitle;
+
     @ViewInject(id = R.id.login)
     private Button mLoginBtn;
+
+    private QQLoginer mQQLoginer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +43,65 @@ public class LoginActivity extends Activity implements OnClickListener {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mQQLoginer != null)
+            mQQLoginer.unregister();
+    }
+
+    @Override
     public void onClick(View v) {
-        XHttpRequest request = new LoginRequest(Test.openid, Test.token);
-        request.addParam("name", "ttt");
-        System.err.println("token: " + Test.token);
+        mQQLoginer = new QQLoginer(this, new LoginCallback());
+        mQQLoginer.gotoLoginPage();
+    }
+
+    private class LoginCallback implements Callback {
+        @Override
+        public void onCancel(int arg0) {
+        }
+
+        @Override
+        public void onFail(int arg0, String arg1) {
+        }
+
+        @Override
+        public void onSuccess(final Object obj) {
+            final String openId = ((OpenId) obj).getOpenId();
+            final String token = mQQLoginer.getAccessToken();
+            System.err.println("token: " + token);
+            
+            final GetQQInfoRequest request = new GetQQInfoRequest(Conf.APPID, token, openId);
+            final XHttpCallback callback = new XHttpCallbacks.DefaultHttpCallback() {
+                @Override
+                public void onSuccess(AHttpResult result) {
+                    JSONObject infoJo = (JSONObject) result.data;
+                    login(openId, token, infoJo);
+                };
+            };
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    XHttpClient.sendRequest(request, callback);
+                }
+            });
+        };
+    }
+
+    private void login(final String openid, final String token, JSONObject userInfo) {
+        XHttpRequest request = new LoginRequest(openid, token);
+        request.addParam("name", userInfo.optString("nickname"));
+        request.addParam("sex", userInfo.optString("gender"));
         XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {
                 super.onSuccess(result);
-                SharedPreferences sp = getSharedPreferences("session", MODE_PRIVATE);
-                sp.edit().putString("token", Test.token).commit();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                
+                getSharedPreferences("session", MODE_PRIVATE).edit()
+                .putString("token", token)
+                .putString("openid", openid)
+                .commit();
+                
+                Intent intent = new Intent(LoginActivity.this,
+                        MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -51,13 +109,11 @@ public class LoginActivity extends Activity implements OnClickListener {
             @Override
             public void onFaild(AHttpResult result) {
                 super.onFaild(result);
-                Toast.makeText(LoginActivity.this, result.e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,
+                        result.e.getMessage(), Toast.LENGTH_LONG)
+                        .show();
             }
         });
-        // String scope = "get_simple_userinfo, add_topic";
-        // mTencent = Tencent.createInstance(Conf.APPID, this);
-        // mTencent.login(this, scope, this);
-        // TencentOpenAPI2.logIn(this, "", scope, Conf.APPID, "_self",
-        // "auth://tauth.qq.com/", null, null);
-    };
+    }
+
 }
