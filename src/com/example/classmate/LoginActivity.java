@@ -8,9 +8,10 @@ import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpClient;
 import org.xframe.http.XHttpRequest;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,7 +25,7 @@ import com.example.classmate.requests.LoginRequest;
 import com.tencent.tauth.bean.OpenId;
 import com.tencent.tauth.http.Callback;
 
-public class LoginActivity extends Activity implements OnClickListener {
+public class LoginActivity extends FragmentActivity implements OnClickListener {
 
     @ViewInject(id = R.id.title)
     private TextView mTitle;
@@ -74,7 +75,7 @@ public class LoginActivity extends Activity implements OnClickListener {
             final String openId = ((OpenId) obj).getOpenId();
             final String token = mQQLoginer.getAccessToken();
             System.err.println("token: " + token);
-            
+
             final GetQQInfoRequest request = new GetQQInfoRequest(Conf.APPID, token, openId);
             final XHttpCallback callback = new XHttpCallbacks.DefaultHttpCallback() {
                 @Override
@@ -85,6 +86,9 @@ public class LoginActivity extends Activity implements OnClickListener {
             };
             runOnUiThread(new Runnable() {
                 public void run() {
+                    ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+                    dialog.setMessage("正在登录");
+                    dialog.show();
                     XHttpClient.sendRequest(request, callback);
                 }
             });
@@ -95,6 +99,7 @@ public class LoginActivity extends Activity implements OnClickListener {
         XHttpRequest request = new LoginRequest(openid, token);
         request.addParam("name", userInfo.optString("nickname"));
         request.addParam("sex", userInfo.optString("gender"));
+        
         XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback() {
             @Override
             public void onSuccess(AHttpResult result) {

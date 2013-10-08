@@ -7,6 +7,7 @@ import org.xframe.annotation.ViewAnnotation.ViewInject;
 
 import com.example.classmate.common.CommonAdapter;
 import com.example.classmate.common.Conf;
+import com.example.classmate.common.Utils;
 import com.example.classmate.requests.ListRequest;
 import com.example.classmate.utils.ImageLoader;
 import com.example.classmate.utils.WindowAttr;
@@ -14,7 +15,6 @@ import com.example.classmate.utils.WindowAttr;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -45,8 +45,8 @@ public class NewsesFragment extends BaseListFragment implements OnClickListener 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_PUBLISH_NEWS && resultCode == Activity.RESULT_OK) {
-        // TODO Auto-generated method stub
             mData.clear();
+            mAdapter.notifyDataSetChanged();
             mListView.setOnScrollListener(this);
             mPage = 0;
         }
@@ -78,19 +78,31 @@ public class NewsesFragment extends BaseListFragment implements OnClickListener 
             ViewHolder holder = (ViewHolder) mainView.getTag();
 
             JSONObject item = (JSONObject) getItem(position);
-            String info = item.optString("newsinfo");
-            String photoUrl = item.optString("newsphoto");
+            String info = item.optString("newsinfo", "");
+            String photoUrl = item.optString("newsphoto", "");
+            String userPhotoUrl = item.optString("uphoto");
             int reviewNum = item.optInt("reviewnum");
             holder.info.setText(info);
+            holder.name.setText(item.optString("uname", ""));
+            holder.date.setText(item.optString("newsdate", ""));
             holder.reviewNum.setText(String.format("%d条评论", reviewNum));
 
-            if (TextUtils.isEmpty(photoUrl) || "null".equals(photoUrl))
+            if (Utils.isEmptyString(photoUrl))
                 holder.photo.setVisibility(View.GONE);
             else {
                 holder.photo.setVisibility(View.VISIBLE);
                 String imgUrl = Conf.IMAGE_ROOT + photoUrl;
                 holder.photo.setTag(imgUrl);
                 ImageLoader.loadImage(getActivity(), holder.photo);
+            }
+            
+            if (Utils.isEmptyString(userPhotoUrl))
+                holder.userPhoto.setVisibility(View.INVISIBLE);
+            else {
+                holder.userPhoto.setVisibility(View.VISIBLE);
+                String imgUrl = Conf.IMAGE_ROOT + userPhotoUrl;
+                holder.userPhoto.setTag(imgUrl);
+                ImageLoader.loadImage(getActivity(), holder.userPhoto);
             }
 
             return convertView;
@@ -102,6 +114,12 @@ public class NewsesFragment extends BaseListFragment implements OnClickListener 
         }
 
         private class ViewHolder {
+            @ViewInject(id = R.id.news_name)
+            TextView name;
+
+            @ViewInject(id = R.id.news_date)
+            TextView date;
+
             @ViewInject(id = R.id.news_photo)
             ImageView photo;
 
@@ -110,6 +128,9 @@ public class NewsesFragment extends BaseListFragment implements OnClickListener 
 
             @ViewInject(id = R.id.review_num)
             TextView reviewNum;
+            
+            @ViewInject(id = R.id.user_photo)
+            ImageView userPhoto;
         }
     }
 

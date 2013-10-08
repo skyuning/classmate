@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:background="@drawable/bg_listitem_news"
+    android:orientation="horizontal"
     android:padding="16dp" >
 
     <ImageView
@@ -21,20 +21,38 @@
         android:paddingLeft="10dp" >
 
         <TextView
+            android:id="@+id/news_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="jerry" />
+
+        <TextView
+            android:id="@+id/news_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/news_name"
+            android:text="2013-08-24 20:51"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
             android:id="@+id/review_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="1314条评论" />
-        
+
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginTop="5dp"
+            android:layout_below="@id/news_name"
             android:layout_marginBottom="5dp"
-            android:layout_below="@id/name"
+            android:layout_marginTop="5dp"
             android:background="@color/divider" />
 
         <TextView
@@ -48,30 +66,13 @@
         <ImageView
             android:id="@+id/news_photo"
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/news_info"
-            android:src="@drawable/girl"
-            android:scaleType="fitStart" />
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="jerry" />
-
-        <TextView
-            android:id="@+id/datetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/name"
-            android:text="2013-08-24 20:51"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
+            android:adjustViewBounds="true"
+            android:maxHeight="320dp"
+            android:maxWidth="200dp"
+            android:src="@drawable/girl" />
     </RelativeLayout>
 
 </LinearLayout>

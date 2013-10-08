@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATUS" />
@@ -15,12 +15,13 @@
     <application
         android:name=".ClassmateApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:theme="@style/MyTheme" >
         <activity
             android:name="com.example.classmate.WelcomeActivity"
             android:label="@string/title_activity_welcome"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,12 +32,14 @@
         <activity
             android:name="com.example.classmate.LoginActivity"
             android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -49,40 +52,49 @@
         <activity
             android:name="com.example.classmate.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.classmate.ClassmateActivity"
-            android:label="@string/title_activity_classmate" >
+            android:label="@string/title_activity_classmate"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.classmate.UserProfileActivity"
-            android:label="@string/title_activity_user_profile" >
+            android:label="@string/title_activity_user_profile"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.classmate.PublishNewsActivity"
-            android:label="@string/title_activity_publish_news" >
+            android:label="@string/title_activity_publish_news"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.classmate.NewsDetailActivity"
-            android:label="@string/title_activity_publish_news" >
+            android:label="@string/title_activity_publish_news"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.classmate.UserDetailActivity"
-            android:label="同学信息" >
+            android:label="同学信息"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.classmate.HolidayDetailActivity"
-            android:label="纪念日详情" >
+            android:label="纪念日详情"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.classmate.AlbumActivity"
-            android:label="@string/title_activity_album" >
+            android:label="@string/title_activity_album"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.tencent.tauth.TAuthView"
             android:configChanges="keyboardHidden|navigation|orientation"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

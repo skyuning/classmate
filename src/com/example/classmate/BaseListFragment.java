@@ -56,7 +56,7 @@ public abstract class BaseListFragment extends BaseFragment implements
         // header
         mHeaderView = inflater.inflate(R.layout.classmate_list_header, null);
         // mTimeView = (TextView) mHeaderView.findViewById(R.id.time);
-        mListView.addHeaderView(mHeaderView);
+        mListView.addHeaderView(mHeaderView, null, false);
 
         // footer
         mLoadingFooter = inflater.inflate(R.layout.list_footer_loading, null);

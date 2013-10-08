@@ -1,24 +1,36 @@
 package com.example.classmate;
 
+import org.xframe.annotation.ViewAnnotation;
+import org.xframe.annotation.ViewAnnotation.ViewInject;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 public class WelcomeActivity extends Activity {
 
+    private AsyncTask<Void, Void, Void> mAsyncTask;
+    
+    @ViewInject(id = android.R.id.content)
+    private View contentView;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+        ViewAnnotation.bind(this, this);
+        
+        mAsyncTask = new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -30,13 +42,21 @@ public class WelcomeActivity extends Activity {
                 onPostLoading();
             }
         };
-        asyncTask.execute();
+        mAsyncTask.execute();
+        
+        contentView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAsyncTask.cancel(true);
+                onPostLoading();
+            }
+        });
     }
 
     private void onPostLoading() {
         SharedPreferences sp = getSharedPreferences("session", MODE_PRIVATE);
         String token = sp.getString("token", null);
-        if (null != token)
+        if (token != null)
             startActivity(new Intent(this, MainActivity.class));
         else
             startActivity(new Intent(this, LoginActivity.class));
