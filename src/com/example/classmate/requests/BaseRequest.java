@@ -48,9 +48,9 @@ public abstract class BaseRequest extends XHttpRequest {
         JSONObject jo = new JSONObject(content);
         int status = 0;
         if (jo.has("status"))
-            jo.getInt("status");
+            status = jo.getInt("status");
         else
-            jo.getInt("errCode");
+            status = jo.getInt("errCode");
         
         if (status == 0) {
             return jo.opt("message");

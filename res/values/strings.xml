@@ -25,4 +25,6 @@
     <dimen name="divider_width">0.5dp</dimen>
     <dimen name="border_width">0.5dp</dimen>
 
+    <string name="title_activity_edit_holiday">EditHolidayActivity</string>
+
 </resources>

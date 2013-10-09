@@ -13,6 +13,8 @@ public class UpdateUserRequest extends BaseRequest {
 
     public UpdateUserRequest(Context context) {
         super(context);
+        addParam("action", "update");
+        addParam("openid", mOpenId);
     }
 
     @Override
@@ -24,7 +26,6 @@ public class UpdateUserRequest extends BaseRequest {
 
     @Override
     protected String buildUrl() {
-        return Conf.HOST + Conf.PATH + "user.jsp?action=update"
-                + String.format("&token=%s&openid=%s", mToken, mOpenId);
+        return Conf.HOST + Conf.PATH + "user.jsp";
     }
 }

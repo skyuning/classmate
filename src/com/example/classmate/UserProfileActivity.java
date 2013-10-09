@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
-import org.xframe.http.XHttpCallback.AHttpResult;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpCallbacks.DefaultHttpCallback;
 import org.xframe.http.XHttpClient;
@@ -62,6 +61,12 @@ public class UserProfileActivity extends BaseActivity {
     @ViewInject(id = R.id.work)
     private EditText mWorkView;
     
+    @ViewInject(id = R.id.wx)
+    private EditText mWX;
+    
+    @ViewInject(id = R.id.weibo)
+    private EditText mWeibo;
+    
     @ViewInject(id = R.id.ok)
     private Button mOKBtn;
     
@@ -87,6 +92,7 @@ public class UserProfileActivity extends BaseActivity {
             }
         });
         
+        Utils.hideSoftInput(this);
         asyncLoadProfile();
     }
     
@@ -126,6 +132,8 @@ public class UserProfileActivity extends BaseActivity {
                 mQQView.setText(jo.optString("u_qq"));
                 mEmailView.setText(jo.optString("u_email"));
                 mWorkView.setText(jo.optString("u_work"));
+                mWX.setText(jo.optString("u_wx"));
+                mWX.setText(jo.optString("u_weibo"));
                 if (! Utils.isEmptyString(jo.optString("u_photo"))) {
                     mIcon.setTag(Conf.IMAGE_ROOT + jo.optString("u_photo"));
                     ImageLoader.loadImage(UserProfileActivity.this, mIcon);

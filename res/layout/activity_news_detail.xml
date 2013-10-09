@@ -44,7 +44,7 @@
             android:ems="10"
             android:gravity="top"
             android:inputType="textMultiLine"
-            android:background="@drawable/bg_review_input"
+            android:background="@drawable/bg_input_1"
             android:padding="10dp" >
         </EditText>
 

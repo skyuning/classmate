@@ -8,12 +8,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 public class Utils {
 
@@ -104,5 +108,18 @@ public class Utils {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    public static void hideSoftInput(Activity activity) {
+        View curfocus = activity.getCurrentFocus();
+        if (null == curfocus)
+            return;
+                
+        IBinder windowToken = curfocus.getWindowToken();
+        if (null == windowToken)
+            return;
+        
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(windowToken, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

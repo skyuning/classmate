@@ -52,15 +52,16 @@ public class ListLayout extends FrameLayout implements
     }
     
     private void init() {
+        mInflater = LayoutInflater.from(getContext());
+        
+        // init ListView
         mListView = new ListView(getContext());
         addView(mListView);
         mListView.setLayoutParams(new LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         mListView.setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
-
-        mInflater = LayoutInflater.from(getContext());
         
-        // footer
+        // init footer
         mLoadingFooter = mInflater.inflate(R.layout.list_footer_loading, null);
         View loadingView = mLoadingFooter.findViewById(R.id.loading);
         Animation rotateAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
@@ -69,13 +70,21 @@ public class ListLayout extends FrameLayout implements
         mListView.addFooterView(mLoadingFooter, null, false);
 
         mListView.setOnItemClickListener(this);
-
+        
         mIsLoading = false;
         mPage = 0;
     }
     
     public void start() {
         mListView.setAdapter(mAdapter);
+        mListView.setOnScrollListener(this);
+    }
+    
+    public void restart() {
+        mIsLoading = false;
+        mPage = 0;
+        mData.clear();
+        mAdapter.notifyDataSetChanged();
         mListView.setOnScrollListener(this);
     }
     

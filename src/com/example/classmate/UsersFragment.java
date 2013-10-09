@@ -85,6 +85,12 @@ public class UsersFragment extends BaseFragment {
         ListRequest request = new ListRequest(getActivity(), "user", 0);
         request.setPage(page);
         XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback() {
+            
+            @Override
+            public void onPostExecute(AHttpResult result) {
+                mIsLoading = false;
+            }
+            
             @Override
             public void onSuccess(AHttpResult result) {
                 @SuppressWarnings("unchecked")
@@ -96,12 +102,10 @@ public class UsersFragment extends BaseFragment {
                     mData.addAll(data);
                     mAdapter.notifyDataSetChanged();
                 }
-                mIsLoading = false;
             };
 
             @Override
             public void onFaild(AHttpResult result) {
-                mIsLoading = false;
                 // Toast.makeText(getActivity(), result.e.getMessage(),
                 // Toast.LENGTH_LONG).show();
             }

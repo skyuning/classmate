@@ -77,7 +77,7 @@ public class ImageLoader {
     }
     
     public static void loadImage(final Context context, final ImageView iv) {
-        loadImage(context, iv, 240, 320);
+        loadImage(context, iv, 240, 240);
     }
     
     public static void loadImage(final Context context, final ImageView iv, int maxWidth, int maxHeight) {

@@ -86,7 +86,14 @@ public class NewsDetailActivity extends BaseActivity {
             AddReviewRequest request = new AddReviewRequest(
                     NewsDetailActivity.this, mNews.newsId, mEditText.getText()
                             .toString());
-            XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback());
+            XHttpClient.sendRequest(request, new XHttpCallbacks.DefaultHttpCallback() {
+                @Override
+                public void onSuccess(AHttpResult result) {
+                    mListLayout.restart();
+                    mEditText.setText("");
+                    Utils.hideSoftInput(NewsDetailActivity.this);
+                }
+            });
         }
     }
 
@@ -152,7 +159,7 @@ public class NewsDetailActivity extends BaseActivity {
             holder.photo.setVisibility(View.VISIBLE);
             String imgUrl = Conf.IMAGE_ROOT + photoUrl;
             holder.photo.setTag(imgUrl);
-            ImageLoader.loadImage(this, holder.photo);
+            ImageLoader.loadImage(this, holder.photo, 1280, 1280);
         }
     }
 
