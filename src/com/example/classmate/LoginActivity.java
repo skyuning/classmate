@@ -1,5 +1,6 @@
 package com.example.classmate;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
@@ -59,6 +60,18 @@ public class LoginActivity extends FragmentActivity implements OnClickListener {
     public void onClick(View v) {
         mQQLoginer = new QQLoginer(this, new LoginCallback());
         mQQLoginer.gotoLoginPage();
+        
+        if (BuildConfig.DEBUG) {
+            String openid = "2047ADAE95201E43897DEC795A210CC2";
+            String token = "0B7BB7C8EC0B45CF9058739A56CDD001";
+            JSONObject userInfo = new JSONObject();
+            try {
+                userInfo.put("nickname", "雲");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            login(openid, token, userInfo);
+        }
     }
 
     private class LoginCallback implements Callback {

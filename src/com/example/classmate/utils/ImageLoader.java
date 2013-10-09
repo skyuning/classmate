@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 //import java.util.concurrent.BlockingQueue;
@@ -16,6 +15,9 @@ import java.net.URLConnection;
 //import java.util.concurrent.ThreadPoolExecutor;
 //import java.util.concurrent.TimeUnit;
 //import java.util.concurrent.atomic.AtomicInteger;
+
+
+
 
 import com.example.classmate.ClassmateApp;
 import com.example.classmate.common.Utils;
@@ -65,28 +67,49 @@ public class ImageLoader {
         return absImageDir;
     }
     
-    public static void loadImage(final Context context, final ImageView iv) {
-        String url = (String) iv.getTag();
-        Object object = sImageCache.get(url);
-        if (object != null) {
-            iv.setImageBitmap((Bitmap) object);
-            return;
+    private static String getUrlForCache(String url, int maxWidth, int maxHeight) {
+        String urlForCache = url;
+        if (maxWidth > 0 && maxHeight > 0) {
+            urlForCache += maxWidth;
+            urlForCache += maxHeight;
         }
-        
-        String localPath = getImageDir() + Utils.md5(url) + ".png";
-        Bitmap bm = BitmapFactory.decodeFile(localPath);
-        if (bm != null) {
-            iv.setImageBitmap(bm);
-            sImageCache.put(url, bm);
-            Log.d("local image", localPath);
-            return;
-        }
-        
-        iv.setImageResource(loadingImageResId);
-        loadImageFromNet(context, iv);
+        return urlForCache;
     }
     
-    public static void loadImageFromNet(final Context context, final ImageView iv) {
+    public static void loadImage(final Context context, final ImageView iv) {
+        loadImage(context, iv, 240, 320);
+    }
+    
+    public static void loadImage(final Context context, final ImageView iv, int maxWidth, int maxHeight) {
+        String url = (String) iv.getTag();
+        
+        Object object = sImageCache.get(getUrlForCache(url, maxWidth, maxHeight));
+        if (object != null)
+            iv.setImageBitmap((Bitmap) object);
+        else
+            loadImageFromFile(context, iv, maxWidth, maxHeight);
+    }
+    
+    private static void loadImageFromFile(final Context context, final ImageView iv, int maxWidth, int maxHeight) {
+        String url = (String) iv.getTag();
+        
+        String localPath = getImageDir() + Utils.md5(url) + ".png";
+        Bitmap bm = null;
+        if (maxWidth > 0 && maxHeight > 0)
+            bm = Utils.getThumb(localPath, maxWidth, maxHeight);
+        else
+            bm = BitmapFactory.decodeFile(localPath);
+        if (bm != null) {
+            iv.setImageBitmap(bm);
+            sImageCache.put(getUrlForCache(url, maxWidth, maxHeight), bm);
+            Log.d("local image", localPath);
+        } else {
+            loadImageFromNet(context, iv, maxWidth, maxHeight);
+        }
+    }
+    
+    public static void loadImageFromNet(final Context context, final ImageView iv, final int maxWidth, final int maxHeight) {
+        iv.setImageResource(loadingImageResId);
         final String path = (String) iv.getTag();
                 
         AsyncTask<Void, Void, Bitmap> asyncTask = new AsyncTask<Void, Void, Bitmap>() {
@@ -99,8 +122,22 @@ public class ImageLoader {
                     conn.connect();
                     InputStream is = conn.getInputStream();
                     Bitmap bm = BitmapFactory.decodeStream(is);
+                    
+                    String localPath = getImageDir() + Utils.md5(path) + ".png";
+                    File myCaptureFile = new File(localPath);
+                    myCaptureFile.createNewFile();
+                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+                    bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+                    bos.flush();
+                    bos.close();
+                    
+                    if (maxWidth > 0 && maxHeight > 0)
+                        bm = Utils.getThumb(localPath, maxWidth, maxHeight);
+                    
+                    String urlForCache = path + maxWidth + maxHeight;
+                    sImageCache.put(urlForCache, bm);
                     return bm;
-                } catch (MalformedURLException e) {
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -114,6 +151,7 @@ public class ImageLoader {
             protected void onPostExecute(Bitmap result) {
                 if (! path.equals(iv.getTag()))
                     return;
+                
                 if (result == null) {
                     result = BitmapFactory.decodeResource(context.getResources(), faildImageResId);
                     iv.setImageBitmap(result);
@@ -121,23 +159,8 @@ public class ImageLoader {
                     params.height = LayoutParams.WRAP_CONTENT;
                     iv.setLayoutParams(params);
                     return;
-                } 
-                iv.setImageBitmap(result);
-                sImageCache.put(path, result);
-                String url = (String) iv.getTag();
-                String localPath = getImageDir() + Utils.md5(url);
-                try {
-                    File myCaptureFile = new File(localPath + ".png");
-                    myCaptureFile.createNewFile();
-                    BufferedOutputStream bos = new BufferedOutputStream(
-                            new FileOutputStream(myCaptureFile));
-                    result.compress(Bitmap.CompressFormat.JPEG, 80, bos);
-                    bos.flush();
-                    bos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } else {
+                    iv.setImageBitmap(result);
                 }
             }
         };

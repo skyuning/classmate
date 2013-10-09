@@ -70,7 +70,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/news_info"
             android:adjustViewBounds="true"
-            android:maxHeight="320dp"
+            android:maxHeight="160dp"
             android:maxWidth="200dp"
             android:src="@drawable/girl" />
     </RelativeLayout>

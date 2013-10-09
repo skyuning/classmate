@@ -1,11 +1,16 @@
 package com.example.classmate.common;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -60,5 +65,44 @@ public class Utils {
         }
 
         return hex.toString();
+    }
+    
+    // maxWidth 必须小于等于 maxHeight
+    // http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
+    public static Bitmap getThumb(String filePath, int maxWidth, int maxHeight) {
+        // 获取Bitmap的Size信息
+        // JustDecodeBounds
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        try {
+            BitmapFactory.decodeStream(new FileInputStream(new File(filePath)), null, options);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        int scale = 1;
+
+        int outWidth = 0;
+        int outHeight = 0;
+        if (options.outWidth <= options.outHeight) {
+            outWidth = options.outWidth;
+            outHeight = options.outHeight;
+        } else {
+            outWidth = options.outHeight;
+            outHeight = options.outWidth;
+        }
+        while (outWidth / scale > maxWidth || outHeight / scale > maxHeight)
+            scale *= 2;
+
+        options = new BitmapFactory.Options();
+        options.inSampleSize = scale;
+        try {
+            Bitmap bmp = BitmapFactory.decodeStream(new FileInputStream(new File(filePath)), null, options);
+            return bmp;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
