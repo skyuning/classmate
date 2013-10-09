@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
+import org.xframe.http.XHttpCallback.AHttpResult;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpCallbacks.DefaultHttpCallback;
 import org.xframe.http.XHttpClient;
@@ -130,6 +131,11 @@ public class UserProfileActivity extends BaseActivity {
                     ImageLoader.loadImage(UserProfileActivity.this, mIcon);
                     mIconPath = null;
                 }
+            }
+
+            @Override
+            public void onFaild(AHttpResult result) {
+                System.err.println("");
             }
         });
     }

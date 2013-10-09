@@ -141,7 +141,7 @@ public class NewsDetailActivity extends BaseActivity {
         String info = item.optString("newsinfo");
         String photoUrl = item.optString("newsphoto");
         int reviewNum = item.optInt("reviewnum");
-        holder.info.setText(info + "\n" + photoUrl);
+        holder.info.setText(info);
         holder.reviewNum.setText(String.format("%d条评论", reviewNum));
         holder.name.setText(item.optString("unmae"));
         holder.datetime.setText(item.optString("newsdate"));

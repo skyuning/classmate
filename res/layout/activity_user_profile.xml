@@ -17,8 +17,8 @@
                 android:id="@+id/icon"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/all_pic_1" />
+                android:src="@drawable/default_user_icon"
+                android:layout_gravity="center_vertical" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,6 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="#00000000"
                     android:gravity="center_vertical"
                     android:padding="15dp"
                     android:text="jerry"
@@ -47,6 +48,7 @@
                     android:id="@+id/birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#00000000"
                     android:gravity="center_vertical"
                     android:padding="15dp"
                     android:text="abcdefghijklmn"
@@ -87,6 +89,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
+                    android:background="#00000000"
                     android:gravity="center_vertical"
                     android:padding="15dp"
                     android:text="TextView"
@@ -125,6 +128,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
+                    android:background="#00000000"
                     android:gravity="center_vertical"
                     android:padding="15dp"
                     android:text="TextView"
@@ -165,6 +169,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
+                    android:background="#00000000"
                     android:gravity="center_vertical"
                     android:padding="15dp"
                     android:text="TextView"
@@ -202,6 +207,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
+                    android:background="#00000000"
                     android:gravity="center_vertical"
                     android:padding="15dp"
                     android:text="TextView"
@@ -239,6 +245,84 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="TextView"
+                    android:textColor="@color/classmate_detail_info"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#888" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:text="微信"
+                    android:textColor="@color/classmate_detail_tag"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="#888" />
+
+                <EditText
+                    android:id="@+id/wx"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="TextView"
+                    android:textColor="@color/classmate_detail_info"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#888" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="微博"
+                    android:textColor="@color/classmate_detail_tag"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="#888" />
+
+                <EditText
+                    android:id="@+id/weibo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:background="#00000000"
                     android:gravity="center_vertical"
                     android:padding="15dp"
                     android:text="TextView"
@@ -249,14 +333,13 @@
 
         <Button
             android:id="@+id/ok"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@drawable/bg_red_btn"
-            android:textColor="#fff"
-            android:text="确定" />
-
+            android:padding="10dp"
+            android:text="确定"
+            android:textColor="#fff" />
     </LinearLayout>
 
 </ScrollView>

@@ -35,6 +35,12 @@ public class UserDetailActivity extends BaseActivity {
     @ViewInject(id = R.id.work)
     private TextView mWorkView;
     
+    @ViewInject(id = R.id.wx)
+    private TextView mWX;
+    
+    @ViewInject(id = R.id.weibo)
+    private TextView mWeiBo;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

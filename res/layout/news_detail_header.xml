@@ -28,6 +28,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="15dp"
             android:text="今天是个好日子，好日子，耗子，今天是个好日子，好日子，耗子，今天是个好日子，好日子，耗子，"
+            android:textSize="15sp"
             android:textColor="@color/text_gray" />
 
         <RelativeLayout

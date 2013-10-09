@@ -4,15 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:paddingBottom="10dp" >
 
     <View
         android:id="@+id/View1"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="#888" />
+        android:background="#ccc" />
 
     <ImageView
         android:id="@+id/photo"
