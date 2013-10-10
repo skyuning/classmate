@@ -1,6 +1,10 @@
 package com.example.classmate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -27,6 +31,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public abstract class BaseListFragment extends BaseFragment implements
         OnItemClickListener, OnScrollListener {
@@ -42,7 +47,7 @@ public abstract class BaseListFragment extends BaseFragment implements
     private View mLoadingFooter;
     private View mHeaderView;
 
-    // private TextView mTimeView;
+    private TextView mTimeView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,7 +60,8 @@ public abstract class BaseListFragment extends BaseFragment implements
 
         // header
         mHeaderView = inflater.inflate(R.layout.classmate_list_header, null);
-        // mTimeView = (TextView) mHeaderView.findViewById(R.id.time);
+        mTimeView = (TextView) mHeaderView.findViewById(R.id.time);
+        mTimeView.setText(calcTime());
         mListView.addHeaderView(mHeaderView, null, false);
 
         // footer
@@ -77,6 +83,31 @@ public abstract class BaseListFragment extends BaseFragment implements
         mPage = 0;
 
         return mLayout;
+    }
+    
+    private String calcTime() {
+        SimpleDateFormat formater = new SimpleDateFormat("yy-MM-dd");
+        try {
+            Date start = formater.parse("1998-07-01");
+            Date end = new Date();
+            int year = end.getYear() - start.getYear();
+            
+            Calendar cal = Calendar.getInstance();
+            if (end.getMonth() > start.getMonth()) {
+                cal.set(end.getYear() + 1900, start.getMonth(), start.getDate());
+            } else {
+                cal.set(end.getYear() + 1990 - 1, start.getMonth(), start.getDate());
+                year--;
+            }
+            start = cal.getTime();
+            int day = (int) ((end.getTime() - start.getTime()) / 24 / 3600 / 1000);
+            
+            String time = String.format("已毕业%d年%d天", year, day);
+            return time;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     private void loadOnePageData(int page) {

@@ -116,6 +116,7 @@ public class UserProfileActivity extends BaseActivity {
             @Override
             public void onSuccess(AHttpResult result) {
                 showToast("提交成功");
+                finish();
             }
         });
     }

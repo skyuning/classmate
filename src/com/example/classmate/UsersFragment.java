@@ -44,7 +44,7 @@ public class UsersFragment extends BaseFragment {
     private int mPage;
     private boolean mIsLoading;
     private View mLoadingFooter;
-    private View mHeaderView;
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -58,10 +58,6 @@ public class UsersFragment extends BaseFragment {
         mAdapter = new ClassmateAdapter(getActivity(), mData);
         mListView.setOnItemClickListener(new _OnItemClickListener());
         mListView.setOnScrollListener(new _OnScrollListener());
-
-        // header
-        mHeaderView = inflater.inflate(R.layout.classmate_list_header, null);
-        mListView.addHeaderView(mHeaderView);
 
         // footer
         mLoadingFooter = inflater.inflate(R.layout.list_footer_loading, null);

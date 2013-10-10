@@ -50,7 +50,6 @@ public class HolidaysFragment extends BaseFragment implements OnClickListener {
     private LinearLayout mLayout;
     private List<Holiday> mData;
     private CommemorationAdapter mAdapter;
-    private View mHeaderView;
     private View mLoadingFooter;
     private int mPage;
     private boolean mIsLoading;
@@ -64,10 +63,6 @@ public class HolidaysFragment extends BaseFragment implements OnClickListener {
                 R.layout.fragment_holiday_list, null);
         ViewAnnotation.bind(mLayout, this);
 
-        // header
-        mHeaderView = inflater.inflate(R.layout.classmate_list_header, null);
-        mListView.addHeaderView(mHeaderView);
-        
         // footer
         mLoadingFooter = inflater.inflate(R.layout.list_footer_loading, null);
         View loadingView = mLoadingFooter.findViewById(R.id.loading);

@@ -52,8 +52,6 @@ public class NewsesFragment extends BaseListFragment implements OnClickListener 
         }
     }
 
-
-
     private class NewsAdapter extends CommonAdapter {
 
         public NewsAdapter(Context context, List<JSONObject> mData) {
