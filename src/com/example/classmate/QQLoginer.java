@@ -16,7 +16,6 @@ import com.tencent.tauth.http.Callback;
 
 public class QQLoginer {
 
-    public static final String QQ_KEY = "100298602";
     public static final String QQ_SCOPE = "get_user_info,get_info,add_t,add_pic_t";
     public static final String QQ_CALLBACK = "auth://tauth.qq.com/";
 

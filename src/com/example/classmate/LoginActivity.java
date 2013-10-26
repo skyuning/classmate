@@ -1,6 +1,5 @@
 package com.example.classmate;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
@@ -12,7 +11,6 @@ import org.xframe.http.XHttpRequest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,13 +18,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.classmate.common.BaseActivity;
 import com.example.classmate.common.Conf;
 import com.example.classmate.requests.GetQQInfoRequest;
 import com.example.classmate.requests.LoginRequest;
 import com.tencent.tauth.bean.OpenId;
 import com.tencent.tauth.http.Callback;
 
-public class LoginActivity extends FragmentActivity implements OnClickListener {
+public class LoginActivity extends BaseActivity implements OnClickListener {
 
     @ViewInject(id = R.id.title)
     private TextView mTitle;
@@ -38,6 +37,8 @@ public class LoginActivity extends FragmentActivity implements OnClickListener {
     private ProgressBar mProgressBar;
 
     private QQLoginer mQQLoginer;
+    
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +62,17 @@ public class LoginActivity extends FragmentActivity implements OnClickListener {
         mQQLoginer = new QQLoginer(this, new LoginCallback());
         mQQLoginer.gotoLoginPage();
         
-        if (BuildConfig.DEBUG) {
-            String openid = "2047ADAE95201E43897DEC795A210CC2";
-            String token = "0B7BB7C8EC0B45CF9058739A56CDD001";
-            JSONObject userInfo = new JSONObject();
-            try {
-                userInfo.put("nickname", "雲");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            login(openid, token, userInfo);
-        }
+//        if (BuildConfig.DEBUG) {
+//            String openid = "2047ADAE95201E43897DEC795A210CC2";
+//            String token = "0B7BB7C8EC0B45CF9058739A56CDD001";
+//            JSONObject userInfo = new JSONObject();
+//            try {
+//                userInfo.put("nickname", "雲");
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            login(openid, token, userInfo);
+//        }
     }
 
     private class LoginCallback implements Callback {
@@ -99,9 +100,9 @@ public class LoginActivity extends FragmentActivity implements OnClickListener {
             };
             runOnUiThread(new Runnable() {
                 public void run() {
-                    ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
-                    dialog.setMessage("正在登录");
-                    dialog.show();
+                    mProgressDialog = new ProgressDialog(LoginActivity.this);
+                    mProgressDialog.setMessage("正在登录");
+                    mProgressDialog.show();
                     XHttpClient.sendRequest(request, callback);
                 }
             });
@@ -117,6 +118,8 @@ public class LoginActivity extends FragmentActivity implements OnClickListener {
             @Override
             public void onSuccess(AHttpResult result) {
                 super.onSuccess(result);
+                
+                mProgressDialog.dismiss();
                 
                 getSharedPreferences("session", MODE_PRIVATE).edit()
                 .putString("token", token)
