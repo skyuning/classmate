@@ -99,12 +99,14 @@ public class UserProfileActivity extends BaseActivity {
     private void onOKBtnClicked(View v) {
         UpdateUserRequest request = new UpdateUserRequest(UserProfileActivity.this);
         request.addParam("name", mNameView.getText().toString());
-        request.addParam("birth", mBirthView.getText().toString());
+        request.addParam("birthday", mBirthView.getText().toString());
         request.addParam("cellphone", mPhoneView.getText().toString());
         request.addParam("address", mAddressView.getText().toString());
         request.addParam("email", mEmailView.getText().toString());
         request.addParam("qq", mQQView.getText().toString());
         request.addParam("work", mWorkView.getText().toString());
+        request.addParam("weixin", mWX.getText().toString());
+        request.addParam("weibo", mWeibo.getText().toString());
         if (mIconPath != null) {
             try {
                 request.addMultipartImage("photo", mIconPath);
@@ -133,8 +135,8 @@ public class UserProfileActivity extends BaseActivity {
                 mQQView.setText(jo.optString("u_qq"));
                 mEmailView.setText(jo.optString("u_email"));
                 mWorkView.setText(jo.optString("u_work"));
-                mWX.setText(jo.optString("u_wx"));
-                mWX.setText(jo.optString("u_weibo"));
+                mWX.setText(jo.optString("u_weixin"));
+                mWeibo.setText(jo.optString("u_weibo"));
                 if (! Utils.isEmptyString(jo.optString("u_photo"))) {
                     mIcon.setTag(Conf.IMAGE_ROOT + jo.optString("u_photo"));
                     ImageLoader.loadImage(UserProfileActivity.this, mIcon);
