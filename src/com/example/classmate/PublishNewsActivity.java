@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.xframe.annotation.ViewAnnotation;
 import org.xframe.annotation.ViewAnnotation.ViewInject;
+import org.xframe.http.XHttpCallback.AHttpResult;
 import org.xframe.http.XHttpCallbacks;
 import org.xframe.http.XHttpClient;
 
@@ -75,6 +76,13 @@ public class PublishNewsActivity extends BaseActivity implements OnClickListener
                                     Toast.LENGTH_LONG).show();
                             setResult(RESULT_OK);
                             finish();
+                        }
+
+                        @Override
+                        public void onFaild(AHttpResult result) {
+                            super.onFaild(result);
+                            Toast.makeText(PublishNewsActivity.this, "上传失败",
+                                    Toast.LENGTH_LONG).show();
                         }
                     });
         } catch (UnsupportedEncodingException e) {

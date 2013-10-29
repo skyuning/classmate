@@ -21,7 +21,7 @@ public class UpdateUserRequest extends BaseRequest {
     public Object handleResponse(HttpResponse response, String content)
             throws Exception {
         System.err.println(content);
-        return null;
+        return super.handleResponse(response, content);
     }
 
     @Override

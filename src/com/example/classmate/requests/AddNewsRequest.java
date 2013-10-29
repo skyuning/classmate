@@ -13,12 +13,11 @@ import com.example.classmate.common.Conf;
 @XHttpAttr(method = XHttpMethod.POST)
 public class AddNewsRequest extends BaseRequest {
 
-    private String mInfo;
-
     public AddNewsRequest(Context context, String photoPath, String info)
             throws UnsupportedEncodingException {
         super(context);
-        mInfo = info;
+        addParam("action", "add");
+        addParam("info", info);
         if (null != photoPath)
             addMultipartFile("photo", photoPath, "image/jpeg");
     }
@@ -33,8 +32,7 @@ public class AddNewsRequest extends BaseRequest {
 
     @Override
     protected String buildUrl() {
-        String url = String.format(Conf.HOST + Conf.PATH
-                + "news?action=add&token=%s&info=%s", mToken, mInfo);
+        String url = String.format(Conf.HOST + Conf.PATH + "news");
         return url;
     }
 }

@@ -18,6 +18,7 @@ import com.example.classmate.utils.WindowAttr;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -117,12 +118,17 @@ public class HolidaysFragment extends BaseFragment implements OnClickListener {
 
     private class _OnItemClickListener implements OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                long id) {
-             Intent intent = new Intent(getActivity(), HolidayDetailActivity.class);
-             intent.putExtra("holiday",
-                     (Serializable) parent.getItemAtPosition(position));
-             startActivity(intent);
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Holiday holiday = (Holiday) parent.getItemAtPosition(position);
+            Intent intent = null;
+            if (holiday.category == 1) {
+                Uri uri = Uri.parse("smsto:");
+                intent = new Intent(Intent.ACTION_SENDTO, uri);
+            } else {
+                intent = new Intent(getActivity(), HolidayDetailActivity.class);
+                intent.putExtra("holiday", (Serializable) parent.getItemAtPosition(position));
+            }
+            startActivity(intent);
         }
     }
 

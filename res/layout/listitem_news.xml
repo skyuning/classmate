@@ -30,33 +30,13 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/news_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/news_name"
-            android:layout_marginLeft="20dp"
-            android:layout_toLeftOf="@+id/review_num"
-            android:layout_toRightOf="@+id/news_name"
-            android:text="2013-08-24 20:51"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="11sp" />
-
-        <TextView
             android:id="@+id/review_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:textSize="12sp"
             android:text="1314条评论" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_below="@id/news_name"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/divider" />
 
         <TextView
             android:id="@+id/news_info"
@@ -76,6 +56,27 @@
             android:maxHeight="160dp"
             android:maxWidth="200dp"
             android:src="@drawable/girl" />
+
+        <TextView
+            android:id="@+id/news_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/news_name"
+            android:layout_below="@+id/news_name"
+            android:text="2013-08-24 20:51"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="11sp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/news_date"
+            android:background="@color/divider" />
+
     </RelativeLayout>
 
 </LinearLayout>
